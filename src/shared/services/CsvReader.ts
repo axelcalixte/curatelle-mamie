@@ -7,9 +7,9 @@ function mapToRow(csvLine: CaisseEpargne): Row {
     date: new Date(csvLine["Date operation"]),
     value: parseFloat(csvLine.Debit ? csvLine.Debit : csvLine.Credit!),
     label: csvLine["Libelle operation"],
-    mainCategory: undefined,
+    mainCategory: undefined, // TODO: write a retrival from json save-file and localstorage as fallback
     subCategory: undefined,
-    edited: false,
+    edited: false, // if the retrieval is successful, edited must be true to indicate that the category is to be edited
   };
 }
 
