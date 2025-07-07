@@ -1,6 +1,6 @@
 import { createSignal } from "solid-js";
 
-export default function FileInput(props: { label: string, defaultName: string, onChangeCallback: Function }) {
+export default function FileInput(props: { label: string, defaultName: string, accept: string, onChangeCallback: Function }) {
 
   const [file, setFile] = createSignal<string>();
 
@@ -11,8 +11,16 @@ export default function FileInput(props: { label: string, defaultName: string, o
           class="file-input"
           id="export"
           type="file"
-          accept="text/csv"
-          onChange={(e) => props.onChangeCallback(e, setFile)}
+          accept={props.accept}
+          onChange={(e) => {
+            setFile(() => {
+              let fileList = e.target!.files!;
+              return fileList.length > 0
+                ? fileList.item(0)!.name
+                : "export de mamie";
+            })
+            props.onChangeCallback(e, setFile);
+          }}
         />
         <span class="file-cta">
           <span class="file-icon">

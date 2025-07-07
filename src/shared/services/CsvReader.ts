@@ -27,12 +27,8 @@ function mapToRow(csvLine: CaisseEpargne): Row {
   };
 }
 
-export function readCsv(files: FileList) {
-  if (!files[0]) {
-    console.error("CsvReader: unexpected empty file input");
-    return;
-  }
-  Papa.parse<CaisseEpargne>(files[0], {
+export function readCsv(file: File) {
+  Papa.parse<CaisseEpargne>(file, {
     header: true,
     skipEmptyLines: true, // https://github.com/mholt/PapaParse/issues/447
     complete: function(results) {
