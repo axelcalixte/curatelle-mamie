@@ -3,7 +3,8 @@ import { createSignal } from "solid-js";
 import { Step, type Row } from "./types";
 import { createStore } from "solid-js/store";
 
-const [tab, setTab] = createSignal<Step>(Step.Categorize);
+const [tab, setTab] = createSignal<number>(Step.Categorize);
+const [saveFile, setSaveFile] = createSignal<Map<string, string[]>>();
 
 const [store, setStore] = createStore({
   rows: [] as Row[],
@@ -14,7 +15,7 @@ const [store, setStore] = createStore({
 // setStore(...)
 // }
 
-export { tab, setTab, store, setStore };
+export { tab, setTab, saveFile, setSaveFile, store, setStore };
 
 // accessing store items doesn't need the function call even if it is a signal
 // store items are initialized during a return or other tracking scopes like
