@@ -2,7 +2,7 @@ import { createSignal } from "solid-js";
 
 export default function FileInput(props: { label: string, defaultName: string, accept: string, onChangeCallback: Function }) {
 
-  const [file, setFile] = createSignal<string>();
+  const [fileName, setFileName] = createSignal<string>();
 
   return (
     <div class="file is-info is-centered has-name">
@@ -13,13 +13,12 @@ export default function FileInput(props: { label: string, defaultName: string, a
           type="file"
           accept={props.accept}
           onChange={(e) => {
-            setFile(() => {
+            setFileName(() => {
               let fileList = e.target!.files!;
-              return fileList.length > 0
-                ? fileList.item(0)!.name
-                : "export de mamie";
+              if (fileList.length > 0) return fileList.item(0)!.name;
             })
-            props.onChangeCallback(e, setFile);
+            e.target.files?.item(0)
+            props.onChangeCallback(e);
           }}
         />
         <span class="file-cta">
@@ -30,7 +29,7 @@ export default function FileInput(props: { label: string, defaultName: string, a
           </span>
           <span class="file-label">{props.label}</span>
         </span>
-        <span class="file-name">{file() ?? props.defaultName}</span>
+        <span class="file-name">{fileName() ?? props.defaultName}</span>
       </label>
     </div>
   );
