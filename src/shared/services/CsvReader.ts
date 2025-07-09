@@ -39,7 +39,6 @@ export function readCsv(file: File) {
     skipEmptyLines: true, // https://github.com/mholt/PapaParse/issues/447
     complete: function(results) {
       setStore("rows", () => [...results.data.map((line) => mapToRow(line))]);
-      console.log(store.rows)
     },
   });
 }

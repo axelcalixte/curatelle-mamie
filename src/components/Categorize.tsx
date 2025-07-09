@@ -1,6 +1,6 @@
 import FileInput from "./FileInput";
 import { readCsv } from "../shared/services/CsvReader";
-import { setFile, store } from "../state";
+import { setFile } from "../state";
 
 export default function Categorize() {
   function readingCsvFile(e: Event & {
