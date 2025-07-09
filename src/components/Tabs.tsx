@@ -11,53 +11,35 @@ export default function Tabs() {
   onMount(() => toggleTab(categorize));
 
   function toggleTab(ref: HTMLLIElement) {
-    if (ref === categorize) {
-      if (!ref.classList.contains("is-active")) {
-        ref.classList.add("is-active");
-      }
-      check.classList.remove("is-active");
-      save.classList.remove("is-active");
-    } else if (ref === check) {
-      if (!ref.classList.contains("is-active")) {
-        ref.classList.add("is-active");
-      }
-      categorize.classList.remove("is-active");
-      save.classList.remove("is-active");
-    } else if (ref === save) {
-      if (!ref.classList.contains("is-active")) {
-        ref.classList.add("is-active");
-      }
-      categorize.classList.remove("is-active");
-      check.classList.remove("is-active");
+    const refs = [categorize, check, save];
+    for (const r of refs) {
+      if (r === ref) r.classList.add("is-active");
+      if (r !== ref) r.classList.remove("is-active");
     }
+  }
+
+  function changeContentsTo(ref: HTMLLIElement, step: number) {
+    toggleTab(ref);
+    setTab(() => step);
   }
 
   return (
     <section class="section">
       <div class="tabs is-fullwidth">
         <ul>
-          <li ref={categorize} onClick={() => {
-            toggleTab(categorize);
-            setTab(() => Step.Categorize);
-          }}>
+          <li ref={categorize} onClick={() => changeContentsTo(categorize, Step.Categorize)}>
             <a>
-              <span>1. Catégoriser</span>
+              <span>{Step.Categorize + 1}. Catégoriser</span>
             </a>
           </li>
-          <li ref={check} onClick={() => {
-            toggleTab(check);
-            setTab(() => Step.Check);
-          }}>
+          <li ref={check} onClick={() => changeContentsTo(check, Step.Check)}>
             <a>
-              <span>2. Vérifier</span>
+              <span>{Step.Check + 1}. Vérifier</span>
             </a>
           </li>
-          <li ref={save} onClick={() => {
-            toggleTab(save);
-            setTab(() => Step.Save);
-          }}>
+          <li ref={save} onClick={() => changeContentsTo(save, Step.Save)}>
             <a>
-              <span>3. Exporter</span>
+              <span>{Step.Save + 1}. Exporter</span>
             </a>
           </li>
         </ul>
