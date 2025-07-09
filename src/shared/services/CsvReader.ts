@@ -1,16 +1,22 @@
 import Papa from "papaparse";
 import type { CaisseEpargne, Row } from "../../types";
-import { saveFile, setStore, store } from "../../state";
+import { save, setStore, store } from "../../state";
+
+const localStorage = window.localStorage;
 
 function retrieveCategory(label: string, cat: number): string | undefined {
   if (cat < 0 || cat > 1) {
     console.error("CsvReader: only 0 and 1 are allowed category numbers");
     return undefined;
   }
-  return saveFile()?.get(label)![cat] ??
-    localStorage.getItem("label") != null
-    ? localStorage.getItem("label")![cat]
-    : undefined;
+  if (save()?.has(label)) {
+    return save()?.get(label)![cat];
+  } else {
+    const item = localStorage.getItem(label);
+    if (item && item[cat]) {
+      return item[cat];
+    } else { return undefined; }
+  }
 }
 
 function mapToRow(csvLine: CaisseEpargne): Row {
@@ -32,9 +38,8 @@ export function readCsv(file: File) {
     header: true,
     skipEmptyLines: true, // https://github.com/mholt/PapaParse/issues/447
     complete: function(results) {
-      console.log(results)
       setStore("rows", () => [...results.data.map((line) => mapToRow(line))]);
-      console.log(store.rows);
+      console.log(store.rows)
     },
   });
 }
