@@ -39,7 +39,7 @@ export default function Entry(props: { idx: Accessor<number> }) {
     const mainCategoryIdx = recoverOptionIdx("mainCategory");
     mainCategorySelect.selectedIndex = mainCategoryIdx === -1 ? 0 : mainCategoryIdx;
 
-    const subCategoryIdx = recoverOptionIdx("mainCategory");
+    const subCategoryIdx = recoverOptionIdx("subCategory");
     subCategorySelect.selectedIndex = subCategoryIdx === -1 ? 0 : subCategoryIdx;
   })
 
