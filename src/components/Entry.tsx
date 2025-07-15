@@ -9,8 +9,8 @@ import { depenses, ressources } from "../types";
 
 export default function Entry(props: { idx: Accessor<number> }) {
 
-  function idx(){ return props.idx() }
-  function row(){ return store.rows[idx()] }
+  function idx() { return props.idx() }
+  function row() { return store.rows[idx()] }
 
   function getRessourcesOrDepenses() {
     return store.rows[idx()].value > 0 ? ressources : depenses;
@@ -29,7 +29,8 @@ export default function Entry(props: { idx: Accessor<number> }) {
     let optionIdx = -1;
     let option = row()[rowAttribute];
     if (option) {
-      optionIdx = mainCategoriesKeys().indexOf(option);
+      if (rowAttribute === "mainCategory") optionIdx = mainCategoriesKeys().indexOf(option);
+      if (rowAttribute === "subCategory") optionIdx = getRessourcesOrDepenses()[mainCategory()].indexOf(option);
     }
     return optionIdx;
   }
@@ -55,6 +56,7 @@ export default function Entry(props: { idx: Accessor<number> }) {
             onChange={(e) => {
               setStore("rows", idx(), "mainCategory", e.target.value);
               setMainCategory(() => e.target.value);
+              setStore("rows", idx(), "subCategory", getRessourcesOrDepenses()[e.target.value][0])
             }}
           >
             <For each={mainCategoriesKeys()}>
