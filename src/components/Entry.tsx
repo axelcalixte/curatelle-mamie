@@ -56,7 +56,9 @@ export default function Entry(props: { idx: Accessor<number> }) {
             onChange={(e) => {
               setStore("rows", idx(), "mainCategory", e.target.value);
               setMainCategory(() => e.target.value);
+              // NOTE: syncing subCat idx with select tag selectedIdx
               setStore("rows", idx(), "subCategory", getRessourcesOrDepenses()[e.target.value][0])
+              subCategorySelect.selectedIndex = 0;
             }}
           >
             <For each={mainCategoriesKeys()}>
@@ -73,6 +75,7 @@ export default function Entry(props: { idx: Accessor<number> }) {
             id={"subcat-" + idx()}
             onChange={(e) => {
               setStore("rows", idx(), "subCategory", e.target.value);
+              // implicitely updating selectedIdx here
             }}
           >
             <For each={subCategories()}>
