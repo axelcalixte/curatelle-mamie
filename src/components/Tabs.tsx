@@ -3,14 +3,15 @@ import { setTab } from "../state";
 import { Step } from "../types";
 
 export default function Tabs() {
+  let files!: HTMLLIElement;
   let categorize!: HTMLLIElement;
   let check!: HTMLLIElement;
   let save!: HTMLLIElement;
 
-  onMount(() => toggleTab(categorize));
+  onMount(() => toggleTab(files));
 
   function toggleTab(ref: HTMLLIElement) {
-    const refs = [categorize, check, save];
+    const refs = [files, categorize, check, save];
     for (const r of refs) {
       if (r === ref) r.classList.add("is-active");
       if (r !== ref) r.classList.remove("is-active");
@@ -26,6 +27,11 @@ export default function Tabs() {
     <section class="section">
       <div class="tabs is-fullwidth">
         <ul>
+          <li ref={files} onClick={() => changeContentsTo(files, Step.Files)}>
+            <a>
+              <span>{Step.Files + 1}. Importer</span>
+            </a>
+          </li>
           <li
             ref={categorize}
             onClick={() => changeContentsTo(categorize, Step.Categorize)}

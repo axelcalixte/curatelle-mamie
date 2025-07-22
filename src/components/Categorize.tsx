@@ -1,53 +1,30 @@
-import FileInput from "./FileInput";
-import { readCsv } from "../shared/services/CsvReader";
-import { setFile, store } from "../state";
 import { For } from "solid-js";
+import Tier from "./Tier";
+import { store } from "../state";
 
 export default function Categorize() {
-  function readingCsvFile(
-    e: Event & {
-      currentTarget: HTMLInputElement;
-      target: HTMLInputElement;
-    },
-  ) {
-    if (!e.target?.files || !e.target.files.item(0)) {
-      console.error("unexpected empty csv file input");
-      return;
-    }
-    readCsv(e.target!.files!.item(0)!);
+  function tiers() {
+    return store.tiers;
   }
 
-  function settingFile(
-    e: Event & {
-      currentTarget: HTMLInputElement;
-      target: HTMLInputElement;
-    },
-  ) {
-    if (e.target?.files && e.target.files.item(0)) {
-      setFile(() => e.target!.files!.item(0)!);
-    }
-  }
+  let headerFooter = () => (
+    <tr>
+      <th>Edité</th>
+      <th>Libellé</th>
+      <th>Catégorie</th>
+      <th>Sous-catégorie</th>
+    </tr>
+  );
 
   return (
-    <>
-      <FileInput
-        label={"Précédente catégorisation"}
-        defaultName={"Aucune sauvegarde"}
-        accept={"application/json"}
-        onChangeCallback={settingFile}
-      />
-      <FileInput
-        label={"Export CSV"}
-        defaultName={"Export de mamie"}
-        accept={"text/csv"}
-        onChangeCallback={readingCsvFile}
-      />
-
-      <ul>
-        <For each={[...new Set(store.rows.map((row) => row.label))]}>
-          {(label) => <li>{label}</li>}
+    <table class="table mx-auto">
+      <thead>{headerFooter()}</thead>
+      <tbody>
+        <For each={tiers()} fallback={<></>}>
+          {(tier) => <Tier tier={tier} />}
         </For>
-      </ul>
-    </>
+      </tbody>
+      <tfoot>{headerFooter()}</tfoot>
+    </table>
   );
 }

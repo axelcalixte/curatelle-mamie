@@ -1,34 +1,29 @@
-import { For, type Accessor, onMount, createSignal } from "solid-js";
-import { store, setStore } from "../state";
-import { depenses, ressources } from "../types";
+import { createSignal, For, onMount } from "solid-js";
+import { DebitOrCredit, depenses, ressources, type TierT } from "../types";
+import { setStore } from "../state";
 
-export default function Entry(props: { idx: Accessor<number> }) {
-  function idx() {
-    return props.idx();
-  }
-  function row() {
-    return store.rows[idx()];
-  }
-
-  function getRessourcesOrDepenses() {
-    return store.rows[idx()].value > 0 ? ressources : depenses;
-  }
-  function mainCategoriesKeys() {
-    return Object.keys(getRessourcesOrDepenses());
-  }
-
-  const [mainCategory, setMainCategory] = createSignal<string>(
-    row().mainCategory ?? mainCategoriesKeys()[0],
-  );
-  const subCategories = () => getRessourcesOrDepenses()[mainCategory()];
+export default function Tier(props: { tier: TierT }) {
+  const tier = () => props.tier;
 
   let mainCategorySelect!: HTMLSelectElement;
-
   let subCategorySelect!: HTMLSelectElement;
+
+  function getRessourcesOrDepenses() {
+    switch (tier().type) {
+      case DebitOrCredit.Debit:
+        return depenses;
+      case DebitOrCredit.Credit:
+        return ressources;
+      default:
+        throw new Error(
+          "Tier.getRessourcesOrDepenses, unreachable, type is either 0 or 1",
+        );
+    }
+  }
 
   function recoverOptionIdx(rowAttribute: "mainCategory" | "subCategory") {
     let optionIdx = -1;
-    let option = row()[rowAttribute];
+    let option = tier()[rowAttribute];
     if (option) {
       if (rowAttribute === "mainCategory")
         optionIdx = mainCategoriesKeys().indexOf(option);
@@ -49,22 +44,36 @@ export default function Entry(props: { idx: Accessor<number> }) {
       subCategoryIdx === -1 ? 0 : subCategoryIdx;
   });
 
+  function mainCategoriesKeys() {
+    return Object.keys(getRessourcesOrDepenses());
+  }
+
+  const [mainCategory, setMainCategory] = createSignal(
+    tier().mainCategory ?? mainCategoriesKeys()[0],
+  );
+  const subCategories = () =>
+    getRessourcesOrDepenses()[mainCategory() ?? mainCategoriesKeys()[0]];
+
   return (
     <tr>
-      <th>{row().date.toLocaleDateString()}</th>
-      <td>{row().value}</td>
-      <td>{row().label}</td>
+      <td>{tier().edited ? "YES" : "NO"}</td>
+      <td>{tier().label}</td>
       <td>
         <div class="select is-rounded">
           <select
             ref={mainCategorySelect}
             onChange={(e) => {
-              setStore("rows", idx(), "mainCategory", e.target.value);
+              setStore(
+                "tiers",
+                (t) => t.label === tier().label,
+                "mainCategory",
+                e.target.value,
+              );
               setMainCategory(() => e.target.value);
               // NOTE: syncing subCat idx with select tag selectedIdx
               setStore(
-                "rows",
-                idx(),
+                "tiers",
+                (t) => t.label === tier().label,
                 "subCategory",
                 getRessourcesOrDepenses()[e.target.value][0],
               );
@@ -82,9 +91,13 @@ export default function Entry(props: { idx: Accessor<number> }) {
         <div class="select is-rounded">
           <select
             ref={subCategorySelect}
-            id={"subcat-" + idx()}
             onChange={(e) => {
-              setStore("rows", idx(), "subCategory", e.target.value);
+              setStore(
+                "tiers",
+                (t) => t.label === tier().label,
+                "subCategory",
+                e.target.value,
+              );
               // implicitely updating selectedIdx here
             }}
           >

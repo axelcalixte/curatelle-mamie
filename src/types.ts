@@ -1,7 +1,8 @@
 export const Step = {
-  Categorize: 0,
-  Check: 1,
-  Save: 2,
+  Files: 0,
+  Categorize: 1,
+  Check: 2,
+  Save: 3,
 } as const;
 
 export type CaisseEpargne = {
@@ -27,6 +28,19 @@ export type Row = {
   mainCategory: string | undefined;
   subCategory: string | undefined;
   edited: boolean;
+};
+
+export type TierT = {
+  label: string;
+  type: (typeof DebitOrCredit)[keyof typeof DebitOrCredit];
+  mainCategory: string | undefined;
+  subCategory: string | undefined;
+  edited: boolean;
+};
+
+export const DebitOrCredit = {
+  Debit: 0 as const,
+  Credit: 1 as const,
 };
 
 export const ressources = {
