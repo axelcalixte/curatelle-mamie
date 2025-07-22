@@ -1,12 +1,15 @@
 import FileInput from "./FileInput";
 import { readCsv } from "../shared/services/CsvReader";
-import { setFile } from "../state";
+import { setFile, store } from "../state";
+import { For } from "solid-js";
 
 export default function Categorize() {
-  function readingCsvFile(e: Event & {
-    currentTarget: HTMLInputElement,
-    target: HTMLInputElement
-  }) {
+  function readingCsvFile(
+    e: Event & {
+      currentTarget: HTMLInputElement;
+      target: HTMLInputElement;
+    },
+  ) {
     if (!e.target?.files || !e.target.files.item(0)) {
       console.error("unexpected empty csv file input");
       return;
@@ -14,10 +17,11 @@ export default function Categorize() {
     readCsv(e.target!.files!.item(0)!);
   }
 
-  function settingFile(e: Event & {
-    currentTarget: HTMLInputElement,
-    target: HTMLInputElement
-  }
+  function settingFile(
+    e: Event & {
+      currentTarget: HTMLInputElement;
+      target: HTMLInputElement;
+    },
   ) {
     if (e.target?.files && e.target.files.item(0)) {
       setFile(() => e.target!.files!.item(0)!);
@@ -38,6 +42,12 @@ export default function Categorize() {
         accept={"text/csv"}
         onChangeCallback={readingCsvFile}
       />
+
+      <ul>
+        <For each={[...new Set(store.rows.map((row) => row.label))]}>
+          {(label) => <li>{label}</li>}
+        </For>
+      </ul>
     </>
   );
 }

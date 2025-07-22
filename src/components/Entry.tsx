@@ -1,16 +1,14 @@
-import {
-  For,
-  type Accessor,
-  onMount,
-  createSignal,
-} from "solid-js";
+import { For, type Accessor, onMount, createSignal } from "solid-js";
 import { store, setStore } from "../state";
 import { depenses, ressources } from "../types";
 
 export default function Entry(props: { idx: Accessor<number> }) {
-
-  function idx() { return props.idx() }
-  function row() { return store.rows[idx()] }
+  function idx() {
+    return props.idx();
+  }
+  function row() {
+    return store.rows[idx()];
+  }
 
   function getRessourcesOrDepenses() {
     return store.rows[idx()].value > 0 ? ressources : depenses;
@@ -19,18 +17,24 @@ export default function Entry(props: { idx: Accessor<number> }) {
     return Object.keys(getRessourcesOrDepenses());
   }
 
-  const [mainCategory, setMainCategory] = createSignal(row().mainCategory ?? mainCategoriesKeys()[0]);
-  const subCategories = () => getRessourcesOrDepenses()[mainCategory() ?? mainCategoriesKeys()[0]];
+  const [mainCategory, setMainCategory] = createSignal(
+    row().mainCategory ?? mainCategoriesKeys()[0],
+  );
+  const subCategories = () =>
+    getRessourcesOrDepenses()[mainCategory() ?? mainCategoriesKeys()[0]];
 
   let mainCategorySelect!: HTMLSelectElement;
+
   let subCategorySelect!: HTMLSelectElement;
 
   function recoverOptionIdx(rowAttribute: "mainCategory" | "subCategory") {
     let optionIdx = -1;
     let option = row()[rowAttribute];
     if (option) {
-      if (rowAttribute === "mainCategory") optionIdx = mainCategoriesKeys().indexOf(option);
-      if (rowAttribute === "subCategory") optionIdx = getRessourcesOrDepenses()[mainCategory()].indexOf(option);
+      if (rowAttribute === "mainCategory")
+        optionIdx = mainCategoriesKeys().indexOf(option);
+      if (rowAttribute === "subCategory")
+        optionIdx = getRessourcesOrDepenses()[mainCategory()].indexOf(option);
     }
     return optionIdx;
   }
@@ -38,11 +42,13 @@ export default function Entry(props: { idx: Accessor<number> }) {
   // manually setting the selectedIndex of both <select> element from the store values
   onMount(() => {
     const mainCategoryIdx = recoverOptionIdx("mainCategory");
-    mainCategorySelect.selectedIndex = mainCategoryIdx === -1 ? 0 : mainCategoryIdx;
+    mainCategorySelect.selectedIndex =
+      mainCategoryIdx === -1 ? 0 : mainCategoryIdx;
 
     const subCategoryIdx = recoverOptionIdx("subCategory");
-    subCategorySelect.selectedIndex = subCategoryIdx === -1 ? 0 : subCategoryIdx;
-  })
+    subCategorySelect.selectedIndex =
+      subCategoryIdx === -1 ? 0 : subCategoryIdx;
+  });
 
   return (
     <tr>
@@ -57,7 +63,12 @@ export default function Entry(props: { idx: Accessor<number> }) {
               setStore("rows", idx(), "mainCategory", e.target.value);
               setMainCategory(() => e.target.value);
               // NOTE: syncing subCat idx with select tag selectedIdx
-              setStore("rows", idx(), "subCategory", getRessourcesOrDepenses()[e.target.value][0])
+              setStore(
+                "rows",
+                idx(),
+                "subCategory",
+                getRessourcesOrDepenses()[e.target.value][0],
+              );
               subCategorySelect.selectedIndex = 0;
             }}
           >
@@ -86,5 +97,4 @@ export default function Entry(props: { idx: Accessor<number> }) {
       </td>
     </tr>
   );
-
 }

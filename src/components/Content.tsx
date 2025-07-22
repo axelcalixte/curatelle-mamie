@@ -4,10 +4,9 @@ import Categorize from "./Categorize";
 import Mouvements from "./Mouvements";
 
 export default function Content() {
-
   return (
     <section class="section">
-      <Switch> 
+      <Switch>
         <Match when={tab() === 0}>
           <Categorize />
         </Match>

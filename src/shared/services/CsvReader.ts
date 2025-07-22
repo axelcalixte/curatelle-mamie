@@ -1,6 +1,6 @@
 import Papa from "papaparse";
 import type { CaisseEpargne, Row } from "../../types";
-import { save, setStore, store } from "../../state";
+import { save, setStore } from "../../state";
 
 const localStorage = window.localStorage;
 
@@ -15,7 +15,9 @@ function retrieveCategory(label: string, cat: number): string | undefined {
     const item = localStorage.getItem(label);
     if (item && item[cat]) {
       return item[cat];
-    } else { return undefined; }
+    } else {
+      return undefined;
+    }
   }
 }
 
@@ -29,15 +31,16 @@ function mapToRow(csvLine: CaisseEpargne): Row {
     label: csvLine["Libelle operation"],
     mainCategory: mainCategory,
     subCategory: subCategory,
-    edited: Boolean(mainCategory || subCategory)
+    edited: Boolean(mainCategory || subCategory),
   };
 }
 
 export function readCsv(file: File) {
   Papa.parse<CaisseEpargne>(file, {
     header: true,
+
     skipEmptyLines: true, // https://github.com/mholt/PapaParse/issues/447
-    complete: function(results) {
+    complete: function (results) {
       setStore("rows", () => [...results.data.map((line) => mapToRow(line))]);
     },
   });

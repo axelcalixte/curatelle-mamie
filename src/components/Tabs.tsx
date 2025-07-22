@@ -3,7 +3,6 @@ import { setTab } from "../state";
 import { Step } from "../types";
 
 export default function Tabs() {
-
   let categorize!: HTMLLIElement;
   let check!: HTMLLIElement;
   let save!: HTMLLIElement;
@@ -27,7 +26,10 @@ export default function Tabs() {
     <section class="section">
       <div class="tabs is-fullwidth">
         <ul>
-          <li ref={categorize} onClick={() => changeContentsTo(categorize, Step.Categorize)}>
+          <li
+            ref={categorize}
+            onClick={() => changeContentsTo(categorize, Step.Categorize)}
+          >
             <a>
               <span>{Step.Categorize + 1}. Catégoriser</span>
             </a>

@@ -1,7 +1,11 @@
 import { createSignal } from "solid-js";
 
-export default function FileInput(props: { label: string, defaultName: string, accept: string, onChangeCallback: Function }) {
-
+export default function FileInput(props: {
+  label: string;
+  defaultName: string;
+  accept: string;
+  onChangeCallback: Function;
+}) {
   const [fileName, setFileName] = createSignal<string>();
 
   return (
@@ -16,8 +20,8 @@ export default function FileInput(props: { label: string, defaultName: string, a
             setFileName(() => {
               let fileList = e.target!.files!;
               if (fileList.length > 0) return fileList.item(0)!.name;
-            })
-            e.target.files?.item(0)
+            });
+            e.target.files?.item(0);
             props.onChangeCallback(e);
           }}
         />

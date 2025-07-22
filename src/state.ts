@@ -26,6 +26,6 @@ const save = createMemo(() => {
   } catch (e) {
     console.error(e);
   }
-})
+});
 
 export { tab, setTab, store, setStore, setFile, save };

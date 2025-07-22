@@ -1,8 +1,8 @@
 export const Step = {
-  "Categorize": 0,
-  "Check": 1,
-  "Save": 2
-} as const; 
+  Categorize: 0,
+  Check: 1,
+  Save: 2,
+} as const;
 
 export type CaisseEpargne = {
   "Date de comptabilisation": string;
