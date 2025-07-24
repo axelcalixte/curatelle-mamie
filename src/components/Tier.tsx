@@ -1,9 +1,14 @@
-import { createSignal, For, onMount } from "solid-js";
+import { createSignal, For, onCleanup, onMount } from "solid-js";
 import { DebitOrCredit, depenses, ressources, type TierT } from "../types";
 import { setStore } from "../state";
 
 export default function Tier(props: { tier: TierT }) {
   const tier = () => props.tier;
+
+  const [edited, setEdited] = createSignal(tier().edited ?? false);
+
+  const prefersDarkQuery = window.matchMedia("(prefers-color-scheme: dark)");
+  const [prefersDark, setPrefersDark] = createSignal(prefersDarkQuery?.matches);
 
   let mainCategorySelect!: HTMLSelectElement;
   let subCategorySelect!: HTMLSelectElement;
@@ -15,9 +20,7 @@ export default function Tier(props: { tier: TierT }) {
       case DebitOrCredit.Credit:
         return ressources;
       default:
-        throw new Error(
-          "Tier.getRessourcesOrDepenses, unreachable, type is either 0 or 1",
-        );
+        throw new Error("unreachable, type is either 0 or 1");
     }
   }
 
@@ -33,6 +36,10 @@ export default function Tier(props: { tier: TierT }) {
     return optionIdx;
   }
 
+  function prefersDarkListener(ev: MediaQueryListEvent) {
+    setPrefersDark(() => ev.matches);
+  }
+
   // manually setting the selectedIndex of both <select> element from the store values
   onMount(() => {
     const mainCategoryIdx = recoverOptionIdx("mainCategory");
@@ -42,7 +49,11 @@ export default function Tier(props: { tier: TierT }) {
     const subCategoryIdx = recoverOptionIdx("subCategory");
     subCategorySelect.selectedIndex =
       subCategoryIdx === -1 ? 0 : subCategoryIdx;
+
+    prefersDarkQuery.addEventListener("change", prefersDarkListener)
   });
+
+  onCleanup(() => prefersDarkQuery.removeEventListener("change", prefersDarkListener))
 
   function mainCategoriesKeys() {
     return Object.keys(getRessourcesOrDepenses());
@@ -54,14 +65,30 @@ export default function Tier(props: { tier: TierT }) {
   const subCategories = () =>
     getRessourcesOrDepenses()[mainCategory() ?? mainCategoriesKeys()[0]];
 
+  function colors() {
+    let prefers = "light";
+    if (prefersDark()) {
+      prefers = "dark"
+    }
+    switch (tier().type) {
+      case 0:
+        return ["has-background-success-" + prefers, "is-success"];
+      case 1:
+        return ["has-background-danger-" + prefers, "is-danger"];
+      default:
+        throw new Error("unreachable");
+    }
+  }
+
   return (
-    <tr>
-      <td>{tier().edited ? "YES" : "NO"}</td>
+    <tr class={colors()[0]} >
+      <td>{edited() ? "YES" : "NO"}</td>
       <td>{tier().label}</td>
       <td>
-        <div class="select is-rounded">
+        <div class={"select is-rounded " + colors()[1]}>
           <select
             ref={mainCategorySelect}
+            on:focusout={() => setEdited(() => true)}
             onChange={(e) => {
               setStore(
                 "tiers",
@@ -88,7 +115,7 @@ export default function Tier(props: { tier: TierT }) {
       </td>
 
       <td>
-        <div class="select is-rounded">
+        <div class={"select is-rounded " + colors()[1]}>
           <select
             ref={subCategorySelect}
             onChange={(e) => {
@@ -99,6 +126,7 @@ export default function Tier(props: { tier: TierT }) {
                 e.target.value,
               );
               // implicitely updating selectedIdx here
+              setEdited(() => true);
             }}
           >
             <For each={subCategories()}>

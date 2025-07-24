@@ -36,7 +36,8 @@ function mapToRow(csvLine: CaisseEpargne): Row {
   return {
     date: new Date(csvLine["Date operation"]),
     value: value,
-    label: csvLine["Libelle simplifie"],
+    _label: csvLine["Libelle simplifie"],
+    label: csvLine["Libelle operation"],
     mainCategory: mainCategory,
     subCategory: subCategory,
     edited: Boolean(mainCategory || subCategory),

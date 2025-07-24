@@ -25,6 +25,7 @@ export type Row = {
   date: Date;
   value: number;
   label: string;
+  _label: string;
   mainCategory: string | undefined;
   subCategory: string | undefined;
   edited: boolean;
