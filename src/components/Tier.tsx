@@ -1,14 +1,16 @@
 import { createSignal, For, onCleanup, onMount } from "solid-js";
 import { DebitOrCredit, depenses, ressources, type TierT } from "../types";
 import { setStore } from "../state";
+import {
+  prefersDark,
+  prefersDarkListener,
+  prefersDarkQuery,
+} from "../shared/services/theme";
 
 export default function Tier(props: { tier: TierT }) {
   const tier = () => props.tier;
 
   const [edited, setEdited] = createSignal(tier().edited ?? false);
-
-  const prefersDarkQuery = window.matchMedia("(prefers-color-scheme: dark)");
-  const [prefersDark, setPrefersDark] = createSignal(prefersDarkQuery?.matches);
 
   let mainCategorySelect!: HTMLSelectElement;
   let subCategorySelect!: HTMLSelectElement;
@@ -36,10 +38,6 @@ export default function Tier(props: { tier: TierT }) {
     return optionIdx;
   }
 
-  function prefersDarkListener(ev: MediaQueryListEvent) {
-    setPrefersDark(() => ev.matches);
-  }
-
   // manually setting the selectedIndex of both <select> element from the store values
   onMount(() => {
     const mainCategoryIdx = recoverOptionIdx("mainCategory");
@@ -50,10 +48,12 @@ export default function Tier(props: { tier: TierT }) {
     subCategorySelect.selectedIndex =
       subCategoryIdx === -1 ? 0 : subCategoryIdx;
 
-    prefersDarkQuery.addEventListener("change", prefersDarkListener)
+    prefersDarkQuery.addEventListener("change", prefersDarkListener);
   });
 
-  onCleanup(() => prefersDarkQuery.removeEventListener("change", prefersDarkListener))
+  onCleanup(() =>
+    prefersDarkQuery.removeEventListener("change", prefersDarkListener),
+  );
 
   function mainCategoriesKeys() {
     return Object.keys(getRessourcesOrDepenses());
@@ -68,7 +68,7 @@ export default function Tier(props: { tier: TierT }) {
   function colors() {
     let prefers = "light";
     if (prefersDark()) {
-      prefers = "dark"
+      prefers = "dark";
     }
     switch (tier().type) {
       case 0:
@@ -81,7 +81,7 @@ export default function Tier(props: { tier: TierT }) {
   }
 
   return (
-    <tr class={colors()[0]} >
+    <tr class={colors()[0]}>
       <td>{edited() ? "YES" : "NO"}</td>
       <td>{tier().label}</td>
       <td>
