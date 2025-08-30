@@ -72,9 +72,9 @@ export default function Tier(props: { tier: TierT }) {
     }
     switch (tier().type) {
       case 0:
-        return ["has-background-success-" + prefers, "is-success"];
-      case 1:
         return ["has-background-danger-" + prefers, "is-danger"];
+      case 1:
+        return ["has-background-success-" + prefers, "is-success"];
       default:
         throw new Error("unreachable");
     }
