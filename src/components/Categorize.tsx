@@ -1,6 +1,7 @@
-import { For } from "solid-js";
+import { For, onCleanup } from "solid-js";
 import Tier from "./Tier";
-import { store } from "../state";
+import { setStore, store } from "../state";
+import { produce } from "solid-js/store";
 
 export default function Categorize() {
 
@@ -16,6 +17,19 @@ export default function Categorize() {
       <th>Sous-catégorie</th>
     </tr>
   );
+
+  onCleanup(() => {
+    for (const tier of tiers()) {
+      if (!tier.label.startsWith("CHEQUE") || !tier.label.startsWith("RETRAIT"))
+        setStore("rows",
+          r => r._label === tier.label,
+          produce((row) => {
+              row.mainCategory = tier.mainCategory;
+              row.subCategory = tier.subCategory;
+          })
+        )
+    }
+  });
 
   return (
     <table class="table mx-auto">
