@@ -24,8 +24,8 @@ export type CaisseEpargne = {
 export type Row = {
   date: Date;
   value: number;
-  label: string;
-  _label: string;
+  label: string; // libellé operation
+  _label: string; // libellé simplifié
   mainCategory: string | undefined;
   subCategory: string | undefined;
   edited: boolean;

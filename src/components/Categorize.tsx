@@ -3,6 +3,7 @@ import Tier from "./Tier";
 import { store } from "../state";
 
 export default function Categorize() {
+
   function tiers() {
     return store.tiers;
   }
