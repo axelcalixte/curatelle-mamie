@@ -1,8 +1,13 @@
 import { For } from "solid-js";
 import Entry from "./Entry";
-import type { Row } from "../types";
+import { store } from "../state";
 
-export default function Mouvements(props: { mouvements: Row[] }) {
+export default function Mouvements() {
+
+  function rows() {
+    return store.rows;
+  }
+
   let headerFooter = () => (
     <tr>
       <th>
@@ -20,8 +25,8 @@ export default function Mouvements(props: { mouvements: Row[] }) {
       <thead>{headerFooter()}</thead>
       <tfoot>{headerFooter()}</tfoot>
       <tbody>
-        <For each={props.mouvements} fallback={<></>}>
-          {(_, index) => <Entry idx={index} />}
+        <For each={rows()} fallback={<></>}>
+          {(row) => <Entry row={row} />}
         </For>
       </tbody>
     </table>
