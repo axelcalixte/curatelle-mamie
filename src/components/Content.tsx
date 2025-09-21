@@ -1,8 +1,9 @@
 import { Match, Switch } from "solid-js";
-import { tab, store } from "../state";
+import { tab } from "../state";
 import Categorize from "./Categorize";
 import Mouvements from "./Mouvements";
 import Files from "./Files";
+import Summary from "./Summary";
 
 export default function Content() {
   return (
@@ -15,10 +16,10 @@ export default function Content() {
           <Categorize />
         </Match>
         <Match when={tab() === 2}>
-          <Mouvements mouvements={store.rows} />
+          <Mouvements />
         </Match>
         <Match when={tab() === 3}>
-          <p>Save</p>
+          <Summary />
         </Match>
       </Switch>
     </section>
