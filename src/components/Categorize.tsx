@@ -4,7 +4,6 @@ import { setStore, store } from "../state";
 import { produce } from "solid-js/store";
 
 export default function Categorize() {
-
   function tiers() {
     return store.tiers;
   }
@@ -21,13 +20,14 @@ export default function Categorize() {
   onCleanup(() => {
     for (const tier of tiers()) {
       if (!tier.label.startsWith("CHEQUE") || !tier.label.startsWith("RETRAIT"))
-        setStore("rows",
-          r => r._label === tier.label,
+        setStore(
+          "rows",
+          (r) => r._label === tier.label,
           produce((row) => {
-              row.mainCategory = tier.mainCategory;
-              row.subCategory = tier.subCategory;
-          })
-        )
+            row.mainCategory = tier.mainCategory;
+            row.subCategory = tier.subCategory;
+          }),
+        );
     }
   });
 

@@ -3,7 +3,6 @@ import Entry from "./Entry";
 import { store } from "../state";
 
 export default function Mouvements() {
-
   function rows() {
     return store.rows;
   }
