@@ -3,15 +3,15 @@ import { Step, type Row, type TierT } from "./types";
 import { createStore } from "solid-js/store";
 
 const [tab, setTab] = createSignal<number>(Step.Files);
+const [exportMamie, setExportMamie] = createSignal("Export de mamie");
+const [sauvegarde, setSauvegarde] = createSignal("Aucune sauvegarde");
+const [file, setFile] = createSignal<File>();
+const [saveFileResource] = createResource(file, readingSaveFile);
 
 const [store, setStore] = createStore({
   tiers: [] as TierT[],
   rows: [] as Row[],
-  sums: [] as number[],
 });
-
-const [file, setFile] = createSignal<File>();
-const [saveFileResource] = createResource(file, readingSaveFile);
 
 async function readingSaveFile(file: File) {
   return JSON.parse(await file.text());
@@ -25,4 +25,4 @@ const saveFile = createMemo(() => {
   }
 });
 
-export { tab, setTab, store, setStore, setFile, saveFile };
+export { tab, setTab, store, setStore, setFile, saveFile, exportMamie, setExportMamie, sauvegarde, setSauvegarde};
