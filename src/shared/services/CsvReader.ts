@@ -15,16 +15,15 @@ function retrieveCategory(label: string, cat: number, value: number): string | u
   if (cat !== 0 && cat !== 1) {
     throw Error("CsvReader only accepts 0 and 1 as allowed category numbers");
   }
-  if (saveFile()?.has(label)) {
-    return saveFile()?.get(label)![cat];
-  } else {
-    const item = localStorage.getItem(label);
-    if (item && item[cat]) {
-      return item[cat];
-    } else {
-      return undefined; // shouldn't be reached
-    }
+  if (saveFile().has(label)) {
+    return saveFile().get(label)?.at(cat);
   }
+  const item = localStorage.getItem(label);
+  if (item) {
+    const categories = JSON.parse(item);
+    return categories.at(cat);
+  }
+  return undefined;
 }
 
 function mapToRow(csvLine: CaisseEpargne): Row {

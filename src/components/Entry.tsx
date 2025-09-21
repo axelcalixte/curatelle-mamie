@@ -84,6 +84,7 @@ export default function Entry(props: { row: Row }) {
                 getRessourcesOrDepenses()[e.target.value][0],
               );
               subCategorySelect.selectedIndex = 0;
+              window.localStorage.setItem(row()._label, JSON.stringify([row().mainCategory, row().subCategory]));
             }}
           >
             <For each={mainCategoriesKeys()}>
@@ -104,6 +105,7 @@ export default function Entry(props: { row: Row }) {
                 "subCategory",
                 e.target.value,
               );
+              window.localStorage.setItem(row()._label, JSON.stringify([row().mainCategory, row().subCategory]));
               // implicitely updating selectedIdx here
             }}
           >

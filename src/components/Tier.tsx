@@ -95,6 +95,7 @@ export default function Tier(props: { tier: TierT }) {
                 getRessourcesOrDepenses()[e.target.value][0],
               );
               subCategorySelect.selectedIndex = 0;
+              window.localStorage.setItem(tier().label, JSON.stringify([tier().mainCategory, tier().subCategory]));
             }}
           >
             <For each={mainCategoriesKeys()}>
@@ -117,6 +118,7 @@ export default function Tier(props: { tier: TierT }) {
               );
               // implicitely updating selectedIdx here
               setEdited(() => true);
+              window.localStorage.setItem(tier().label, JSON.stringify([tier().mainCategory, tier().subCategory]));
             }}
           >
             <For each={subCategories()}>
