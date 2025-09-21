@@ -1,10 +1,9 @@
 import { For, onMount, createSignal, onCleanup } from "solid-js";
 import { setStore } from "../state";
 import { depenses, ressources, type Row } from "../types";
-import { prefersDark, prefersDarkListener, prefersDarkQuery } from "../shared/services/theme";
+import { prefersDark } from "../shared/services/theme";
 
 export default function Entry(props: { row: Row }) {
-
   const row = () => props.row;
 
   function getRessourcesOrDepenses() {
@@ -44,15 +43,9 @@ export default function Entry(props: { row: Row }) {
     const subCategoryIdx = recoverOptionIdx("subCategory");
     subCategorySelect.selectedIndex =
       subCategoryIdx === -1 ? 0 : subCategoryIdx;
-
-    prefersDarkQuery.addEventListener("change", prefersDarkListener);
   });
 
-  onCleanup(() =>
-    prefersDarkQuery.removeEventListener("change", prefersDarkListener),
-  );
-
-function colors() {
+  function colors() {
     let prefers = "light";
     if (prefersDark()) {
       prefers = "dark";
@@ -76,16 +69,22 @@ function colors() {
           <select
             ref={mainCategorySelect}
             onChange={(e) => {
-                setStore("rows", (r) => r.label === row().label, "mainCategory", e.target.value);
+              setStore(
+                "rows",
+                (r) => r.label === row().label,
+                "mainCategory",
+                e.target.value,
+              );
               setMainCategory(() => e.target.value);
               // NOTE: syncing subCat idx with select tag selectedIdx
               setStore(
                 "rows",
-                r => r.label === row().label,
+                (r) => r.label === row().label,
                 "subCategory",
                 getRessourcesOrDepenses()[e.target.value][0],
               );
               subCategorySelect.selectedIndex = 0;
+              window.localStorage.setItem(row()._label, JSON.stringify([row().mainCategory, row().subCategory]));
             }}
           >
             <For each={mainCategoriesKeys()}>
@@ -100,7 +99,13 @@ function colors() {
           <select
             ref={subCategorySelect}
             onChange={(e) => {
-              setStore("rows", r => r.label === row().label, "subCategory", e.target.value);
+              setStore(
+                "rows",
+                (r) => r.label === row().label,
+                "subCategory",
+                e.target.value,
+              );
+              window.localStorage.setItem(row()._label, JSON.stringify([row().mainCategory, row().subCategory]));
               // implicitely updating selectedIdx here
             }}
           >

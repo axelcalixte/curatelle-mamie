@@ -1,5 +1,5 @@
 import { readCsv } from "../shared/services/CsvReader";
-import { setFile } from "../state";
+import { exportMamie, sauvegarde, setExportMamie, setFile, setSauvegarde } from "../state";
 import FileInput from "./FileInput";
 
 export default function Files() {
@@ -13,6 +13,7 @@ export default function Files() {
       throw new Error("unexpected empty csv file input");
     }
     readCsv(e.target!.files!.item(0)!);
+    setExportMamie(() => e.target!.files!.item(0)!.name);
   }
 
   function settingFile(
@@ -23,6 +24,7 @@ export default function Files() {
   ) {
     if (e.target?.files && e.target.files.item(0)) {
       setFile(() => e.target!.files!.item(0)!);
+      setSauvegarde(() => e.target!.files!.item(0)!.name);
     }
   }
 
@@ -30,13 +32,13 @@ export default function Files() {
     <>
       <FileInput
         label={"Précédente catégorisation"}
-        defaultName={"Aucune sauvegarde"}
+        defaultName={sauvegarde()}
         accept={"application/json"}
         onChangeCallback={settingFile}
       />
       <FileInput
         label={"Export CSV"}
-        defaultName={"Export de mamie"}
+        defaultName={exportMamie()}
         accept={"text/csv"}
         onChangeCallback={readingCsvFile}
       />
