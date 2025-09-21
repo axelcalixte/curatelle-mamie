@@ -1,11 +1,7 @@
 import { For, onMount, createSignal, onCleanup } from "solid-js";
 import { setStore } from "../state";
 import { depenses, ressources, type Row } from "../types";
-import {
-  prefersDark,
-  prefersDarkListener,
-  prefersDarkQuery,
-} from "../shared/services/theme";
+import { prefersDark } from "../shared/services/theme";
 
 export default function Entry(props: { row: Row }) {
   const row = () => props.row;
@@ -47,13 +43,7 @@ export default function Entry(props: { row: Row }) {
     const subCategoryIdx = recoverOptionIdx("subCategory");
     subCategorySelect.selectedIndex =
       subCategoryIdx === -1 ? 0 : subCategoryIdx;
-
-    prefersDarkQuery.addEventListener("change", prefersDarkListener);
   });
-
-  onCleanup(() =>
-    prefersDarkQuery.removeEventListener("change", prefersDarkListener),
-  );
 
   function colors() {
     let prefers = "light";

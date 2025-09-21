@@ -1,11 +1,7 @@
 import { createSignal, For, onCleanup, onMount } from "solid-js";
 import { DebitOrCredit, depenses, ressources, type TierT } from "../types";
 import { setStore } from "../state";
-import {
-  prefersDark,
-  prefersDarkListener,
-  prefersDarkQuery,
-} from "../shared/services/theme";
+import { prefersDark } from "../shared/services/theme";
 
 export default function Tier(props: { tier: TierT }) {
   const tier = () => props.tier;
@@ -47,13 +43,7 @@ export default function Tier(props: { tier: TierT }) {
     const subCategoryIdx = recoverOptionIdx("subCategory");
     subCategorySelect.selectedIndex =
       subCategoryIdx === -1 ? 0 : subCategoryIdx;
-
-    prefersDarkQuery.addEventListener("change", prefersDarkListener);
   });
-
-  onCleanup(() =>
-    prefersDarkQuery.removeEventListener("change", prefersDarkListener),
-  );
 
   function mainCategoriesKeys() {
     return Object.keys(getRessourcesOrDepenses());
