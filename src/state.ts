@@ -18,11 +18,7 @@ async function readingSaveFile(file: File) {
 }
 
 const saveFile = createMemo(() => {
-  try {
     return new Map<string, string[]>(saveFileResource());
-  } catch (e) {
-    console.error(e);
-  }
 });
 
 export { tab, setTab, store, setStore, setFile, saveFile, exportMamie, setExportMamie, sauvegarde, setSauvegarde};
