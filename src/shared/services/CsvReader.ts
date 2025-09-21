@@ -11,10 +11,9 @@ import { saveFile, setStore } from "../../state";
 
 const localStorage = window.localStorage;
 
-function retrieveCategory(label: string, cat: number): string | undefined {
-  if (cat < 0 || cat > 1) {
-    console.error("CsvReader: only 0 and 1 are allowed category numbers");
-    return undefined;
+function retrieveCategory(label: string, cat: number, value: number): string | undefined {
+  if (cat !== 0 && cat !== 1) {
+    throw Error("CsvReader only accepts 0 and 1 as allowed category numbers");
   }
   if (saveFile()?.has(label)) {
     return saveFile()?.get(label)![cat];
@@ -44,7 +43,19 @@ function mapToRow(csvLine: CaisseEpargne): Row {
   };
 }
 
-function mapToTier(csvLine: CaisseEpargne) {
+function mapToTiers(data: CaisseEpargne[]) {
+  const tiers: TierT[] = [];
+  for (const result of data) {
+    if (
+      !["CHEQUE", "RETRAIT"].some(except => (result["Libelle simplifie"] as string).startsWith(except))
+      && !tiers.some((t) => t.label === result["Libelle simplifie"])
+    )
+      tiers.push(mapToTier(result));
+  }
+  return tiers;
+}
+
+function mapToTier(csvLine: CaisseEpargne): TierT {
   const mainCategory = retrieveCategory(csvLine["Libelle simplifie"], 0);
   const subCategory = retrieveCategory(csvLine["Libelle simplifie"], 1);
   const value = parseFloat(csvLine.Debit ? csvLine.Debit : csvLine.Credit!);
@@ -62,14 +73,9 @@ export function readCsv(file: File) {
   Papa.parse<CaisseEpargne>(file, {
     header: true,
     skipEmptyLines: true, // https://github.com/mholt/PapaParse/issues/447
-    complete: function (results) {
+    complete: function(results) {
+      setStore("tiers", () => mapToTiers(results.data));
       setStore("rows", () => [...results.data.map((line) => mapToRow(line))]);
-      const tiers = new Array<TierT>();
-      for (const result of results.data) {
-        if (!tiers.some((t) => t.label === result["Libelle simplifie"]))
-          tiers.push(mapToTier(result));
-      }
-      setStore("tiers", tiers);
     },
   });
 }

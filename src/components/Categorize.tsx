@@ -19,15 +19,14 @@ export default function Categorize() {
 
   onCleanup(() => {
     for (const tier of tiers()) {
-      if (!tier.label.startsWith("CHEQUE") || !tier.label.startsWith("RETRAIT"))
-        setStore(
-          "rows",
-          (r) => r._label === tier.label,
-          produce((row) => {
-            row.mainCategory = tier.mainCategory;
-            row.subCategory = tier.subCategory;
-          }),
-        );
+      setStore(
+        "rows",
+        (r) => r._label === tier.label,
+        produce((row) => {
+          row.mainCategory = tier.mainCategory;
+          row.subCategory = tier.subCategory;
+        }),
+      );
     }
   });
 
