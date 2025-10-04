@@ -59,40 +59,43 @@ export default function Summary() {
 
   return (
     <>
-      <h3 class="title is-3"> RESSOURCES </h3>
-
-      <table class="table">
-        <tbody>
-          <For each={mappedSums().filter((x) => x.value > 0)}>
-            {(entry) => (
-              <tr>
-                <td>{entry.key}</td>
-                <td>{entry.value / 100}</td>
-              </tr>
-            )}
-          </For>
-        </tbody>
-      </table>
-
-      <h3 class="title is-3"> DEPENSES </h3>
-
-      <table class="table">
-        <tbody>
-          <For each={mappedSums().filter((x) => x.value < 0)}>
-            {(entry) => (
-              <tr>
-                <td>{entry.key}</td>
-                <td>{entry.value / 100}</td>
-              </tr>
-            )}
-          </For>
-        </tbody>
-      </table>
-
-      <button class="button is-info" ref={exportButton}>
-        {" "}
-        Exporter la sauvegarde{" "}
-      </button>
+      <div class="columns">
+        <div class="column has-text-centered">
+          <h3 class="title is-3"> RESSOURCES </h3>
+          <table class="table">
+            <tbody>
+              <For each={mappedSums().filter((x) => x.value > 0)}>
+                {(entry) => (
+                  <tr>
+                    <td>{entry.key}</td>
+                    <td>{entry.value / 100}</td>
+                  </tr>
+                )}
+              </For>
+            </tbody>
+          </table>
+        </div>
+        <div class="column has-text-centered">
+          <h3 class="title is-3"> DEPENSES </h3>
+          <table class="table">
+            <tbody>
+              <For each={mappedSums().filter((x) => x.value < 0)}>
+                {(entry) => (
+                  <tr>
+                    <td>{entry.key}</td>
+                    <td>{entry.value / 100}</td>
+                  </tr>
+                )}
+              </For>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="columns">
+        <button class="button is-info mx-auto" ref={exportButton}>
+          Exporter la sauvegarde
+        </button>
+      </div>
     </>
   );
 }
