@@ -1,4 +1,4 @@
-import { For, onMount, createSignal, onCleanup } from "solid-js";
+import { For, onMount, createSignal } from "solid-js";
 import { setStore } from "../state";
 import { depenses, ressources, type Row } from "../types";
 import { prefersDark } from "../shared/services/theme";

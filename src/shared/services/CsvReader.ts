@@ -11,7 +11,7 @@ import { saveFile, setStore } from "../../state";
 
 const localStorage = window.localStorage;
 
-function retrieveCategory(label: string, cat: number, value: number): string | undefined {
+function retrieveCategory(label: string, cat: number): string | undefined {
   if (cat !== 0 && cat !== 1) {
     throw Error("CsvReader only accepts 0 and 1 as allowed category numbers");
   }
