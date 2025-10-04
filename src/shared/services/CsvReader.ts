@@ -11,7 +11,7 @@ import { saveFile, setStore } from "../../state";
 
 const localStorage = window.localStorage;
 
-function retrieveCategory(label: string, cat: number, value: number): string | undefined {
+function retrieveCategory(label: string, cat: number): string | undefined {
   if (cat !== 0 && cat !== 1) {
     throw Error("CsvReader only accepts 0 and 1 as allowed category numbers");
   }
@@ -46,8 +46,10 @@ function mapToTiers(data: CaisseEpargne[]) {
   const tiers: TierT[] = [];
   for (const result of data) {
     if (
-      !["CHEQUE", "RETRAIT"].some(except => (result["Libelle simplifie"] as string).startsWith(except))
-      && !tiers.some((t) => t.label === result["Libelle simplifie"])
+      !["CHEQUE", "RETRAIT"].some((except) =>
+        (result["Libelle simplifie"] as string).startsWith(except),
+      ) &&
+      !tiers.some((t) => t.label === result["Libelle simplifie"])
     )
       tiers.push(mapToTier(result));
   }
@@ -72,7 +74,7 @@ export function readCsv(file: File) {
   Papa.parse<CaisseEpargne>(file, {
     header: true,
     skipEmptyLines: true, // https://github.com/mholt/PapaParse/issues/447
-    complete: function(results) {
+    complete: function (results) {
       setStore("tiers", () => mapToTiers(results.data));
       setStore("rows", () => [...results.data.map((line) => mapToRow(line))]);
     },

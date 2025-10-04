@@ -1,4 +1,4 @@
-import { createSignal, For, onCleanup, onMount } from "solid-js";
+import { createSignal, For, onMount } from "solid-js";
 import { DebitOrCredit, depenses, ressources, type TierT } from "../types";
 import { setStore } from "../state";
 import { prefersDark } from "../shared/services/theme";
@@ -95,7 +95,10 @@ export default function Tier(props: { tier: TierT }) {
                 getRessourcesOrDepenses()[e.target.value][0],
               );
               subCategorySelect.selectedIndex = 0;
-              window.localStorage.setItem(tier().label, JSON.stringify([tier().mainCategory, tier().subCategory]));
+              window.localStorage.setItem(
+                tier().label,
+                JSON.stringify([tier().mainCategory, tier().subCategory]),
+              );
             }}
           >
             <For each={mainCategoriesKeys()}>
@@ -118,7 +121,10 @@ export default function Tier(props: { tier: TierT }) {
               );
               // implicitely updating selectedIdx here
               setEdited(() => true);
-              window.localStorage.setItem(tier().label, JSON.stringify([tier().mainCategory, tier().subCategory]));
+              window.localStorage.setItem(
+                tier().label,
+                JSON.stringify([tier().mainCategory, tier().subCategory]),
+              );
             }}
           >
             <For each={subCategories()}>
