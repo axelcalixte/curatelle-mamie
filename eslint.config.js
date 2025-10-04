@@ -14,8 +14,8 @@ export default [
         projectService: "tsconfig.json",
       },
       globals: {
-        ...globals.browser
-      }
+        ...globals.browser,
+      },
     },
   },
 ];

@@ -1,10 +1,16 @@
 import { onCleanup, onMount } from "solid-js";
-import { prefersDarkListener, prefersDarkQuery } from "../shared/services/theme";
+import {
+  prefersDarkListener,
+  prefersDarkQuery,
+} from "../shared/services/theme";
 
 export default function Title() {
-
-  onMount(() => prefersDarkQuery.addEventListener("change", prefersDarkListener));
-  onCleanup(() => prefersDarkQuery.removeEventListener("change", prefersDarkListener));
+  onMount(() =>
+    prefersDarkQuery.addEventListener("change", prefersDarkListener),
+  );
+  onCleanup(() =>
+    prefersDarkQuery.removeEventListener("change", prefersDarkListener),
+  );
 
   return (
     <section class="section has-text-centered">
