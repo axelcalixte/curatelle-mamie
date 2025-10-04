@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@types/papaparse": "^5.3.16",
+    "@types/wicg-file-system-access": "2023.10.6",
     "bulma": "^1.0.4",
     "papaparse": "^5.5.3",
     "solid-js": "^1.9.9"
@@ -20,6 +21,7 @@
     "@typescript-eslint/parser": "^8.35.0",
     "eslint": "9.36.0",
     "eslint-plugin-solid": "0.14.5",
+    "globals": "^16.4.0",
     "prettier": "3.6.1",
     "typescript": "~5.8.3",
     "vite": "7.1.6",

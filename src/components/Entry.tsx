@@ -19,7 +19,6 @@ export default function Entry(props: { row: Row }) {
   const subCategories = () => getRessourcesOrDepenses()[mainCategory()];
 
   let mainCategorySelect!: HTMLSelectElement;
-
   let subCategorySelect!: HTMLSelectElement;
 
   function recoverOptionIdx(rowAttribute: "mainCategory" | "subCategory") {
