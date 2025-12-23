@@ -1,0 +1,15 @@
+<div class="grid grid-cols-12 gap-4">
+  <div class="col-span-10 col-start-2">
+    <h1 class="text-center text-xl font-extrabold pt-4">Comptes de mamie</h1>
+  </div>
+  <div class="col-span-10 col-start-2">
+    <div class="grid gap-4">
+      <div>
+        <app-tabs [tabs]="tabs"></app-tabs>
+      </div>
+      <div>
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+</div>

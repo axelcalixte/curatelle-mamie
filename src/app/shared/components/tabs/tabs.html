@@ -1,0 +1,13 @@
+<div class="tabs tabs-lg tabs-border flex" role="tablist">
+  @for (tab of tabs(); track $index; let i = $index) {
+    <a
+      #link
+      (click)="change($event)"
+      class="tab flex-auto"
+      role="tab"
+      routerLink="{{ tab.route }}"
+      routerLinkActive="tab-active text-primary"
+      >{{ tab.name }}</a
+    >
+  }
+</div>
