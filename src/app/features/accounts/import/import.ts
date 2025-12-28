@@ -4,18 +4,6 @@ import Papa from 'papaparse';
 import { CaisseEpargne } from '../../../shared/types/bank-formats';
 import { State } from '../../../shared/services/state';
 import { BankAdapters } from '../../../shared/services/bank-adapters';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { fromPromise } from 'rxjs/internal/observable/innerFrom';
-import { Category } from '../../../shared/models/models';
-
-export type Operation = {
-  type: 'credit' | 'debit';
-  edited: boolean;
-  label: string;
-  label_: string;
-  value: number;
-  category: Category;
-};
 
 @Component({
   selector: 'app-import',

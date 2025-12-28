@@ -1,24 +1,12 @@
-import { Injectable, linkedSignal, resource, signal } from '@angular/core';
-import { Operation } from '../../features/accounts/import/import';
-import { DepensesKeys, RessourcesKeys } from '../types/form-sections';
+import { computed, Injectable, linkedSignal, resource, signal } from '@angular/core';
+import { DepensesKeys, Entity, Operation, RessourcesKeys } from '../types/form-sections';
 
 @Injectable({
   providedIn: 'root',
 })
 export class State {
   private operations_ = signal([] as Operation[]);
-  set setOperations(operations: Operation[]) {
-    this.operations_.set(operations);
-  }
-  get operations() {
-    return this.operations_();
-  }
-
   private file_ = signal<File | null>(null);
-  set file(file: File) {
-    this.file_.set(file);
-  }
-
   // return new Map<string, string[]>(save_());
   private save_ = resource({
     params: () => ({ file: this.file_() }),
@@ -30,7 +18,6 @@ export class State {
       }
     },
   });
-
   /**
    * linkedSignal to be able to update the save while categorizing
    */
@@ -41,10 +28,23 @@ export class State {
     return new Map<string, [DepensesKeys | RessourcesKeys, string]>();
   });
 
+  set setOperations(operations: Operation[]) {
+    this.operations_.set(operations);
+  }
+
+  get operations() {
+    return this.operations_();
+  }
+
+  set file(file: File) {
+    this.file_.set(file);
+  }
+
   /**
    * operations to save format label => {mainCat, subCat}
    * @private
    */
+  /*
   private operationsToSave() {
     this.operations.map((operation: Operation) => {
       return [
@@ -54,5 +54,29 @@ export class State {
         [operation.category.main(), operation.category.sub()],
       ];
     });
+  }
+*/
+
+  /**
+   * filtered operations to batch categorize operations of same label_
+   */
+  categories = computed(() =>
+    this.operations
+      .filter((x) => {
+        return !['CHEQUE', 'RETRAIT'].some((y) => x.label_.startsWith(y));
+      })
+      .map((x) => {
+        return {
+          type: x.type,
+          edited: x.edited,
+          label: x.label_,
+          category: x.category,
+        } as Entity;
+      })
+      .filter(this.distinct),
+  );
+
+  private distinct(element: Entity, index: number, array: Array<Entity>) {
+    return array.findIndex((x) => x.label === element.label) === index;
   }
 }

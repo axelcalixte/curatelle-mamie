@@ -1,3 +1,6 @@
+import { Category } from '../models/models';
+import { WritableSignal } from '@angular/core';
+
 export const ressources = {
   Revenus: [
     'Salaire',
@@ -55,3 +58,18 @@ export const depenses = {
   'Autres dépenses': ['Emoluments du gérant privé de la mesure de protection', 'Autres'] as const,
 };
 export type DepensesKeys = keyof typeof depenses;
+
+export type Operation = {
+  type: 'credit' | 'debit';
+  edited: WritableSignal<boolean>;
+  label: string;
+  label_: string;
+  value: number;
+  category: Category;
+};
+export type Entity = {
+  type: 'credit' | 'debit';
+  edited: WritableSignal<boolean>;
+  label: string;
+  category: Category;
+};

@@ -1,1 +1,41 @@
-<p>categorize works!</p>
+<div class="overflow-x-auto">
+  <table class="table">
+    <thead>
+    <tr>
+      <th class="text-center">Edité</th>
+      <th>Libellé</th>
+      <th>Catégorie</th>
+      <th>Sous-Catégorie</th>
+    </tr>
+    </thead>
+    <tbody>
+      @for (ent of categories(); track ent.label; let i = $index) {
+        <tr [class]="{'bg-base-200': i === firstUneditedEntity()}">
+          <td class="text-center">
+            <div [class]="ent.edited() ? 'status-success' : 'status-error'" aria-label="success"
+                 class="status status-lg"></div>
+          </td>
+          <td>{{ ent.label }}</td>
+          <td><select (change)="changeMainCategory($event, ent)" class="select">
+            @for (mainOption of mainOptions(ent); track $index) {
+              <option [selected]="mainOption === ent.category.main()">{{ mainOption }}</option>
+            }
+          </select></td>
+          <td><select (change)="changeSubCategory($event, ent)" class="select">
+            @for (subOption of subOptions(ent); track $index) {
+              <option [selected]="subOption === ent.category.sub()">{{ subOption }}</option>
+            }
+          </select></td>
+        </tr>
+      }
+    </tbody>
+    <tfoot>
+    <tr>
+      <th class="text-center">Edité</th>
+      <th>Libellé</th>
+      <th>Catégorie</th>
+      <th>Sous-Catégorie</th>
+    </tr>
+    </tfoot>
+  </table>
+</div>

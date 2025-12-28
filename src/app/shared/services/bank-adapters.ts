@@ -1,7 +1,12 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { CaisseEpargne } from '../types/bank-formats';
-import { Operation } from '../../features/accounts/import/import';
-import { depenses, DepensesKeys, ressources, RessourcesKeys } from '../types/form-sections';
+import {
+  depenses,
+  DepensesKeys,
+  Operation,
+  ressources,
+  RessourcesKeys,
+} from '../types/form-sections';
 import { Category } from '../models/models';
 import { State } from './state';
 
@@ -16,8 +21,8 @@ export class BankAdapters {
     const mainCategory = this.retrieveMainCategory(type, caisseEpargne['Libelle simplifie']);
     const subCategory = this.retrieveSubCategory(type, caisseEpargne['Libelle simplifie']);
     return {
-      type: type,
-      edited: false,
+      type: type, // TODO: I probably don't need to keep it there, it is kept in Category
+      edited: signal(false),
       value: type === 'credit' ? parseFloat(caisseEpargne.Credit) : parseFloat(caisseEpargne.Debit),
       label_: caisseEpargne['Libelle simplifie'],
       label: caisseEpargne['Libelle operation'],
@@ -53,7 +58,7 @@ export class BankAdapters {
 
     const item = localStorage.getItem(label);
     if (item) {
-      return JSON.parse(item).at(0) as string | undefined;
+      return JSON.parse(item).at(1) as string | undefined;
     }
 
     return type === 'debit'
