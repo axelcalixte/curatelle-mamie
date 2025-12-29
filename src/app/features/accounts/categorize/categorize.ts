@@ -1,6 +1,5 @@
-import { Component, computed, inject, linkedSignal, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { State } from '../../../shared/services/state';
-import { NgClass } from '@angular/common';
 import {
   depenses,
   DepensesKeys,
@@ -11,17 +10,13 @@ import {
 
 @Component({
   selector: 'app-categorize',
-  imports: [NgClass],
+  imports: [],
   templateUrl: './categorize.html',
   styleUrl: './categorize.css',
 })
 export class Categorize {
   state = inject(State);
   categories = this.state.categories;
-
-  firstUneditedEntity = computed(() =>
-    this.categories().findIndex((category) => !category.edited()),
-  );
 
   protected mainOptions(ent: Entity) {
     return ent.type === 'credit' ? Object.keys(ressources) : Object.keys(depenses);
