@@ -1,4 +1,4 @@
-import { Component, effect, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FileInput } from './components/file-input/file-input';
 import Papa from 'papaparse';
 import { CaisseEpargne } from '../../../shared/types/bank-formats';
@@ -14,15 +14,6 @@ import { BankAdapters } from '../../../shared/services/bank-adapters';
 export class Import {
   state = inject(State);
   adapters = inject(BankAdapters);
-
-  constructor() {
-    effect(() => {
-      console.log(this.state.operations);
-    });
-    effect(() => {
-      console.log(this.state.save());
-    });
-  }
 
   protected parseFile($event: File) {
     Papa.parse<CaisseEpargne>($event, {
