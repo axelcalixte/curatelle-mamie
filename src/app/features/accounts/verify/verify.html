@@ -1,1 +1,47 @@
-<p>verify works!</p>
+<div class="overflow-x-auto">
+  <table class="table">
+    <thead>
+    <tr>
+      <th class="text-center">Edité</th>
+      <th>Date</th>
+      <th>Montant</th>
+      <th>Libellé</th>
+      <th>Catégorie</th>
+      <th>Sous-Catégorie</th>
+    </tr>
+    </thead>
+    <tbody>
+      @for (op of operations; track op.label) {
+        <tr [class]="{'bg-base-200': !op.edited()}">
+          <td class="text-center">
+            <div [class]="op.edited() ? 'status-success' : 'status-error'" aria-label="success"
+                 class="status status-lg"></div>
+          </td>
+          <td>{{ op.date }}</td>
+          <td>{{ op.value }}</td>
+          <td>{{ op.label }}</td>
+          <td><select (change)="changeMainCategory($event, op)" class="select">
+            @for (mainOption of mainOptions(op); track $index) {
+              <option [selected]="mainOption === op.category.main()">{{ mainOption }}</option>
+            }
+          </select></td>
+          <td><select (change)="changeSubCategory($event, op)" class="select">
+            @for (subOption of subOptions(op); track $index) {
+              <option [selected]="subOption === op.category.sub()">{{ subOption }}</option>
+            }
+          </select></td>
+        </tr>
+      }
+    </tbody>
+    <tfoot>
+    <tr>
+      <th class="text-center">Edité</th>
+      <th>Date</th>
+      <th>Montant</th>
+      <th>Libellé</th>
+      <th>Catégorie</th>
+      <th>Sous-Catégorie</th>
+    </tr>
+    </tfoot>
+  </table>
+</div>

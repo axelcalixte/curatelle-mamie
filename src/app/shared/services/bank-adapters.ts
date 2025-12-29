@@ -23,6 +23,7 @@ export class BankAdapters {
     return {
       type: type, // TODO: I probably don't need to keep it there, it is kept in Category
       edited: signal(false),
+      date: caisseEpargne['Date operation'],
       value: type === 'credit' ? parseFloat(caisseEpargne.Credit) : parseFloat(caisseEpargne.Debit),
       label_: caisseEpargne['Libelle simplifie'],
       label: caisseEpargne['Libelle operation'],
