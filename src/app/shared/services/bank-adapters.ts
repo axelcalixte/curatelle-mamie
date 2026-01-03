@@ -64,7 +64,7 @@ export class BankAdapters {
     }
 
     return type === 'debit'
-      ? (depenses['Autres dépenses'][0] as string)
+      ? (depenses['Dépenses de la vie courante'][0] as string)
       : (ressources.Revenus[0] as string);
   }
 }
