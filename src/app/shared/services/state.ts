@@ -5,9 +5,21 @@ import { DepensesKeys, Entity, Operation, RessourcesKeys } from '../types/form-s
   providedIn: 'root',
 })
 export class State {
+  /**
+   * every line in a vsc export from the bank is an operation to be categorized
+   */
   private operations_ = signal([] as Operation[]);
+  set setOperations(operations: Operation[]) {
+    this.operations_.set(operations);
+  }
+  get operations() {
+    return this.operations_();
+  }
+
   private file_ = signal<File | null>(null);
-  // return new Map<string, string[]>(save_());
+  set file(file: File) {
+    this.file_.set(file);
+  }
   private save_ = resource({
     params: () => ({ file: this.file_() }),
     loader: async ({ params }) => {
@@ -27,18 +39,6 @@ export class State {
     }
     return new Map<string, [DepensesKeys | RessourcesKeys, string]>();
   });
-
-  set setOperations(operations: Operation[]) {
-    this.operations_.set(operations);
-  }
-
-  get operations() {
-    return this.operations_();
-  }
-
-  set file(file: File) {
-    this.file_.set(file);
-  }
 
   /**
    * operations to save format label => {mainCat, subCat}

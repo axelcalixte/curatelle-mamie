@@ -11,7 +11,7 @@
     </tr>
     </thead>
     <tbody>
-      @for (op of operations; track op.label) {
+      @for (op of operations; track op.id) {
         <tr [class]="{'bg-base-200': !op.edited()}">
           <td class="text-center">
             <div [class]="op.edited() ? 'status-success' : 'status-error'" aria-label="success"

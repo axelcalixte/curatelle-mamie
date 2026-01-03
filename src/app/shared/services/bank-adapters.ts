@@ -22,6 +22,7 @@ export class BankAdapters {
     const subCategory = this.retrieveSubCategory(type, caisseEpargne['Libelle simplifie']);
     return {
       type: type, // TODO: I probably don't need to keep it there, it is kept in Category
+      id: crypto.randomUUID(),
       edited: signal(false),
       date: caisseEpargne['Date operation'],
       value: type === 'credit' ? parseFloat(caisseEpargne.Credit) : parseFloat(caisseEpargne.Debit),

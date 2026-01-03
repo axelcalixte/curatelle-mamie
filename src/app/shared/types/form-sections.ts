@@ -61,6 +61,7 @@ export type DepensesKeys = keyof typeof depenses;
 
 export type Operation = {
   type: 'credit' | 'debit';
+  id: string;
   edited: WritableSignal<boolean>;
   date: Date;
   label: string;
