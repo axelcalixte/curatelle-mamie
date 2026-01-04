@@ -17,8 +17,8 @@
             <div [class]="op.edited() ? 'status-success' : 'status-error'" aria-label="success"
                  class="status status-lg"></div>
           </td>
-          <td>{{ op.date }}</td>
-          <td>{{ op.value }}</td>
+          <td>{{ op.date | date }}</td>
+          <td>{{ op.value | currency:"EUR" }}</td>
           <td>{{ op.label }}</td>
           <td><select (change)="changeMainCategory($event, op)" class="select">
             @for (mainOption of mainOptions(op); track $index) {

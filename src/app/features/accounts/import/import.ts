@@ -21,9 +21,9 @@ export class Import {
       skipEmptyLines: true, // https://github.com/mholt/PapaParse/issues/447
       transform: (value, field) => {
         if (field === 'Credit' && value.startsWith('+')) {
-          return value.slice(1, value.length);
+          return value.slice(1, value.length).replace(",", ".");
         } else {
-          return value;
+          return value.replace(",", ".");
         }
       },
       complete: (results) => {

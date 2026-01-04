@@ -79,4 +79,44 @@ export class State {
   private distinct(element: Entity, index: number, array: Array<Entity>) {
     return array.findIndex((x) => x.label === element.label) === index;
   }
+
+  /**
+   * signal holding the sums per subcategory
+   */
+  private summary = computed(() => {
+    const res = new Map<string, number>();
+    for (const op of this.operations_()) {
+      const key = op.category.sub();
+      const value = res.get(key);
+      if (value) {
+        res.set(key, value + op.value);
+      } else {
+        res.set(key, op.value);
+      }
+    }
+    console.log("summary", res);
+    return res;
+  });
+
+  ressourcesSummary = computed(() => {
+    const res = new Map();
+    this.summary().forEach((v, k) => {
+      if (v > 0) {
+        res.set(k, v);
+      }
+    });
+    console.log(res);
+    return res;
+  });
+
+  depensesSummary = computed(() => {
+    const res = new Map();
+    this.summary().forEach((v, k) => {
+      if (v < 0) {
+        res.set(k, v);
+      }
+    });
+    console.log(res);
+    return res;
+  });
 }

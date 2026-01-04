@@ -7,10 +7,11 @@ import {
   ressources,
   RessourcesKeys,
 } from '../../../shared/types/form-sections';
+import { CurrencyPipe, DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-verify',
-  imports: [],
+  imports: [CurrencyPipe, DatePipe],
   templateUrl: './verify.html',
   styleUrl: './verify.css',
 })
