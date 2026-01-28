@@ -3,12 +3,12 @@
     <ul class="list bg-base-100 rounded-box shadow-md">
       <li class="p-4 pb-2 text-lg opacity-60 tracking-wide">Dépenses</li>
       @for (depense of depensesSums.entries(); track depense[0]) {
-        <li class="list-row">
-          <div>
+        <li class="list-row grid grid-cols-10">
+          <div class="col-span-8">
             {{ depense[0] }}
           </div>
-          <div>
-            {{ depense[1] }}
+          <div class="col-span-2">
+            {{ depense[1] | currency:"EUR" }}
           </div>
         </li>
       }
@@ -18,12 +18,12 @@
     <ul class="list bg-base-100 rounded-box shadow-md">
       <li class="p-4 pb-2 text-lg opacity-60 tracking-wide">Ressources</li>
       @for (ressource of ressourcesSums.entries(); track ressource[0]) {
-        <li class="list-row">
-          <div>
+        <li class="list-row grid grid-cols-10">
+          <div class="col-span-8">
             {{ ressource[0] }}
           </div>
-          <div>
-            {{ ressource[1] }}
+          <div class="col-span-2">
+            {{ ressource[1] | currency:"EUR" }}
           </div>
         </li>
       }

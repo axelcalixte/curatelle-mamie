@@ -1,10 +1,11 @@
 import { Component, inject } from '@angular/core';
 import { State } from '../../../shared/services/state';
 import { ressources } from '../../../shared/types/form-sections';
+import { CurrencyPipe } from '@angular/common';
 
 @Component({
   selector: 'app-export',
-  imports: [],
+  imports: [CurrencyPipe],
   templateUrl: './export.html',
   styleUrl: './export.css',
 })
