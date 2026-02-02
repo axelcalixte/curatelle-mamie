@@ -44,18 +44,20 @@ export class State {
    * operations to save format label => {mainCat, subCat}
    * @private
    */
-  /*
-  private operationsToSave() {
-    this.operations.map((operation: Operation) => {
-      return [
-        ['CHEQUE', 'RETRAIT'].some((x) => operation.label_.startsWith(x))
-          ? operation.label
-          : operation.label_,
-        [operation.category.main(), operation.category.sub()],
-      ];
-    });
+  public operationsToSave() {
+    return this.operations
+      .map((operation: Operation) => {
+        const isChequeOrRetrait = ['CHEQUE', 'RETRAIT'].some((x) => operation.label_.startsWith(x));
+        return {
+          type: operation.type,
+          edited: operation.edited,
+          label: isChequeOrRetrait ? operation.label : operation.label_,
+          category: operation.category,
+        } as Entity;
+      })
+      .filter(this.distinct)
+      .map((entity) => [entity.label, [entity.category.main(), entity.category.sub()]]);
   }
-*/
 
   /**
    * filtered operations to batch categorize operations of same label_
@@ -94,7 +96,6 @@ export class State {
         res.set(key, op.value);
       }
     }
-    console.log("summary", res);
     return res;
   });
 
@@ -105,7 +106,6 @@ export class State {
         res.set(k, v);
       }
     });
-    console.log(res);
     return res;
   });
 
@@ -116,7 +116,6 @@ export class State {
         res.set(k, v);
       }
     });
-    console.log(res);
     return res;
   });
 }

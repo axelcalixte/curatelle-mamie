@@ -15,4 +15,20 @@ export class Export {
   depensesSums = this.state.depensesSummary();
   ressourcesSums = this.state.ressourcesSummary();
   protected readonly ressources = ressources;
+
+  protected async exportSave() {
+    const handle = await window.showSaveFilePicker({
+      startIn: 'documents',
+      suggestedName: 'comptes_de_mamie_sauvegarde.json',
+      types: [
+        {
+          description: 'JaveScript Object Notation file',
+          accept: { 'application/json': ['.json'] },
+        },
+      ],
+    });
+    const writer = await handle.createWritable();
+    await writer.write(JSON.stringify(this.state.operationsToSave()));
+    await writer.close();
+  }
 }
