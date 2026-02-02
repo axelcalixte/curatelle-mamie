@@ -31,6 +31,7 @@ export class Categorize {
         if (x.label_ === ent.label) {
           x.category.main.set(newMainCatLabel);
           x.edited.set(true);
+          this.state.saveToLocalStorage(x.label_, newMainCatLabel, x.category.sub());
         }
       });
     }
@@ -54,6 +55,7 @@ export class Categorize {
         if (x.label_ === ent.label) {
           x.category.sub.set(newSubCat.label);
           x.edited.set(true);
+          this.state.saveToLocalStorage(x.label_, x.category.main(), newSubCat.label);
         }
       }
     }

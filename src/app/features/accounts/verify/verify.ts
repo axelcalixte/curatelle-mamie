@@ -34,6 +34,13 @@ export class Verify {
       if (modifiedOperation) {
         modifiedOperation.category.main.set(newMainCatLabel);
         modifiedOperation.edited.set(true);
+        const storageLabel = this.state.getStorageLabel(modifiedOperation);
+        this.state.saveToLocalStorage(
+          storageLabel,
+          newMainCatLabel,
+          modifiedOperation.category.sub(),
+          modifiedOperation.comment(),
+        );
       }
     }
   }
@@ -58,6 +65,13 @@ export class Verify {
       if (modifiedOperation) {
         modifiedOperation.category.sub.set(newSubCatLabel);
         modifiedOperation.edited.set(true);
+        const storageLabel = this.state.getStorageLabel(modifiedOperation);
+        this.state.saveToLocalStorage(
+          storageLabel,
+          modifiedOperation.category.main(),
+          newSubCatLabel,
+          modifiedOperation.comment(),
+        );
       }
     }
   }

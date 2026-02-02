@@ -83,6 +83,25 @@ export class State {
   }
 
   /**
+   * Save categorization to localStorage
+   */
+  saveToLocalStorage(label: string, mainCat: string, subCat: string, comment: string = '') {
+    try {
+      localStorage.setItem(label, JSON.stringify([mainCat, subCat, comment]));
+    } catch (error) {
+      console.warn('Failed to save to localStorage:', error);
+    }
+  }
+
+  /**
+   * Get the appropriate label for localStorage key
+   */
+  getStorageLabel(operation: Operation): string {
+    const isChequeOrRetrait = ['CHEQUE', 'RETRAIT'].some((x) => operation.label_.startsWith(x));
+    return isChequeOrRetrait ? operation.label : operation.label_;
+  }
+
+  /**
    * signal holding the sums per subcategory
    */
   private summary = computed(() => {
