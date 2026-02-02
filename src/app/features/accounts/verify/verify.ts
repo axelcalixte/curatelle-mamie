@@ -19,6 +19,7 @@ export class Verify {
   state = inject(State);
 
   operations = this.state.operations;
+  expandedOperations = new Set<string>();
 
   protected mainOptions(op: Operation) {
     return op.type === 'credit' ? Object.keys(ressources) : Object.keys(depenses);
@@ -74,6 +75,18 @@ export class Verify {
         );
       }
     }
+  }
+
+  protected toggleExpanded(op: Operation) {
+    if (this.expandedOperations.has(op.id)) {
+      this.expandedOperations.delete(op.id);
+    } else {
+      this.expandedOperations.add(op.id);
+    }
+  }
+
+  protected isExpanded(op: Operation): boolean {
+    return this.expandedOperations.has(op.id);
   }
 
   protected changeComment($event: Event, op: Operation) {
