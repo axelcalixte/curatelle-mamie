@@ -75,4 +75,22 @@ export class Verify {
       }
     }
   }
+
+  protected changeComment($event: Event, op: Operation) {
+    const htmlTextAreaElement = $event.target as HTMLTextAreaElement;
+    const newComment = htmlTextAreaElement.value;
+    const operationIdx = this.state.operations.findIndex((operation) => op === operation);
+    const modifiedOperation = this.state.operations.at(operationIdx);
+    if (modifiedOperation) {
+      modifiedOperation.comment.set(newComment);
+      modifiedOperation.edited.set(true);
+      const storageLabel = this.state.getStorageLabel(modifiedOperation);
+      this.state.saveToLocalStorage(
+        storageLabel,
+        modifiedOperation.category.main(),
+        modifiedOperation.category.sub(),
+        newComment,
+      );
+    }
+  }
 }

@@ -56,7 +56,17 @@ export class State {
         } as Entity;
       })
       .filter(this.distinct)
-      .map((entity) => [entity.label, [entity.category.main(), entity.category.sub()]]);
+      .map((entity) => {
+        // Find the original operation to get the comment
+        const operation = this.operations.find((op) => {
+          const isChequeOrRetrait = ['CHEQUE', 'RETRAIT'].some((x) => op.label_.startsWith(x));
+          return isChequeOrRetrait ? op.label === entity.label : op.label_ === entity.label;
+        });
+        return [
+          entity.label,
+          [entity.category.main(), entity.category.sub(), operation?.comment?.() || ''],
+        ];
+      });
   }
 
   /**

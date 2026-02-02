@@ -1,47 +1,65 @@
 <div class="overflow-x-auto">
   <table class="table">
     <thead>
-    <tr>
-      <th class="text-center">Edité</th>
-      <th>Date</th>
-      <th>Montant</th>
-      <th>Libellé</th>
-      <th>Catégorie</th>
-      <th>Sous-Catégorie</th>
-    </tr>
+      <tr>
+        <th class="text-center">Edité</th>
+        <th>Date</th>
+        <th>Montant</th>
+        <th>Libellé</th>
+        <th>Catégorie</th>
+        <th>Sous-Catégorie</th>
+        <th>Commentaire</th>
+      </tr>
     </thead>
     <tbody>
       @for (op of operations; track op.id) {
-        <tr [class]="{'bg-base-200': !op.edited()}">
+        <tr [class]="{ 'bg-base-200': !op.edited() }">
           <td class="text-center">
-            <div [class]="op.edited() ? 'status-success' : 'status-error'" aria-label="success"
-                 class="status status-lg"></div>
+            <div
+              [class]="op.edited() ? 'status-success' : 'status-error'"
+              aria-label="success"
+              class="status status-lg"
+            ></div>
           </td>
           <td>{{ op.date | date }}</td>
-          <td>{{ op.value | currency:"EUR" }}</td>
+          <td>{{ op.value | currency: 'EUR' }}</td>
           <td>{{ op.label }}</td>
-          <td><select (change)="changeMainCategory($event, op)" class="select">
-            @for (mainOption of mainOptions(op); track $index) {
-              <option [selected]="mainOption === op.category.main()">{{ mainOption }}</option>
-            }
-          </select></td>
-          <td><select (change)="changeSubCategory($event, op)" class="select">
-            @for (subOption of subOptions(op); track $index) {
-              <option [selected]="subOption === op.category.sub()">{{ subOption }}</option>
-            }
-          </select></td>
+          <td>
+            <select (change)="changeMainCategory($event, op)" class="select">
+              @for (mainOption of mainOptions(op); track $index) {
+                <option [selected]="mainOption === op.category.main()">{{ mainOption }}</option>
+              }
+            </select>
+          </td>
+          <td>
+            <select (change)="changeSubCategory($event, op)" class="select">
+              @for (subOption of subOptions(op); track $index) {
+                <option [selected]="subOption === op.category.sub()">{{ subOption }}</option>
+              }
+            </select>
+          </td>
+          <td>
+            <textarea
+              (change)="changeComment($event, op)"
+              class="textarea textarea-xs w-full"
+              rows="1"
+              placeholder="Ajouter un commentaire..."
+              >{{ op.comment() }}</textarea
+            >
+          </td>
         </tr>
       }
     </tbody>
     <tfoot>
-    <tr>
-      <th class="text-center">Edité</th>
-      <th>Date</th>
-      <th>Montant</th>
-      <th>Libellé</th>
-      <th>Catégorie</th>
-      <th>Sous-Catégorie</th>
-    </tr>
+      <tr>
+        <th class="text-center">Edité</th>
+        <th>Date</th>
+        <th>Montant</th>
+        <th>Libellé</th>
+        <th>Catégorie</th>
+        <th>Sous-Catégorie</th>
+        <th>Commentaire</th>
+      </tr>
     </tfoot>
   </table>
 </div>

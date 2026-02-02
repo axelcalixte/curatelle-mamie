@@ -68,6 +68,7 @@ export type Operation = {
   label_: string;
   value: number;
   category: Category;
+  comment: WritableSignal<string>;
 };
 export type Entity = {
   type: 'credit' | 'debit';
