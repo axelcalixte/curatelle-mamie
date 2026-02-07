@@ -27,6 +27,10 @@ export class BankAdapters {
 
     const mainCategory = this.retrieveMainCategory(type, simplifiedLabel);
     const subCategory = this.retrieveSubCategory(type, simplifiedLabel);
+    const commentValue = this.retrieveComment(storageLabel);
+
+    // Get shared comment signal for this storage label
+    const commentSignal = this.state.getCommentSignal(storageLabel, commentValue);
 
     return {
       type: type, // TODO: I probably don't need to keep it there, it is kept in Category
@@ -37,7 +41,7 @@ export class BankAdapters {
       label_: simplifiedLabel,
       label: fullLabel,
       category: new Category(type, mainCategory, subCategory),
-      comment: signal(this.retrieveComment(storageLabel)),
+      comment: commentSignal,
     };
   }
 

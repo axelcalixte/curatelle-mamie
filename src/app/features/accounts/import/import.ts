@@ -21,15 +21,17 @@ export class Import {
       skipEmptyLines: true, // https://github.com/mholt/PapaParse/issues/447
       transform: (value, field) => {
         if (field === 'Credit' && value.startsWith('+')) {
-          return value.slice(1, value.length).replace(",", ".");
+          return value.slice(1, value.length).replace(',', '.');
         } else {
-          return value.replace(",", ".");
+          return value.replace(',', '.');
         }
       },
       complete: (results) => {
         this.state.setOperations = results.data.map((caisseEpargne) =>
           this.adapters.mapCaisseEpargneToOperation(caisseEpargne),
         );
+        // Initialize shared comment signals from loaded save file
+        this.state.initializeCommentSignalsFromSave();
       },
     });
   }

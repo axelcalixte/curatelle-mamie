@@ -1,4 +1,11 @@
-import { computed, Injectable, linkedSignal, resource, signal } from '@angular/core';
+import {
+  computed,
+  Injectable,
+  linkedSignal,
+  resource,
+  signal,
+  WritableSignal,
+} from '@angular/core';
 import { DepensesKeys, Entity, Operation, RessourcesKeys } from '../types/form-sections';
 
 @Injectable({
@@ -39,6 +46,53 @@ export class State {
     }
     return new Map<string, [DepensesKeys | RessourcesKeys, string]>();
   });
+
+  /**
+   * Shared comment signals indexed by storage label
+   * All operations with the same label share the same comment signal
+   */
+  private commentSignals = new Map<string, WritableSignal<string>>();
+
+  /**
+   * Get or create a shared comment signal for a given storage label
+   * @param storageLabel - The label used as key (label_ for regular ops, label for CHEQUE/RETRAIT)
+   * @param initialValue - Initial value from save file or localStorage
+   * @returns WritableSignal<string> shared by all operations with this label
+   */
+  getCommentSignal(storageLabel: string, initialValue: string = ''): WritableSignal<string> {
+    if (!this.commentSignals.has(storageLabel)) {
+      // Create new shared signal with initial value
+      const commentSignal = signal(initialValue);
+      this.commentSignals.set(storageLabel, commentSignal);
+    }
+    return this.commentSignals.get(storageLabel)!;
+  }
+
+  /**
+   * Initialize comment signals from loaded save file
+   * Call this when operations are first loaded to set up shared signals
+   */
+  initializeCommentSignalsFromSave() {
+    const saveData = this.save();
+    if (!saveData) return;
+
+    for (const [label, data] of saveData.entries()) {
+      const comment = data.length > 2 ? data[2] : '';
+      // Only create if not already exists
+      if (!this.commentSignals.has(label)) {
+        this.commentSignals.set(label, signal(comment));
+      }
+    }
+  }
+
+  /**
+   * Get the storage label for an operation
+   * Uses full label for CHEQUE/RETRAIT, simplified label otherwise
+   */
+  getStorageLabelFromParts(label_: string, label: string): string {
+    const isChequeOrRetrait = ['CHEQUE', 'RETRAIT'].some((x) => label_.startsWith(x));
+    return isChequeOrRetrait ? label : label_;
+  }
 
   /**
    * operations to save format label => {mainCat, subCat}
