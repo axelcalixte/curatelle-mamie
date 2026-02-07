@@ -62,6 +62,7 @@
       <tr class="bg-base-100">
         <td colspan="7" class="p-0">
           <div class="expandable-content" [class.expanded]="isExpanded(op)">
+            @if (isExpanded(op)) {
             <div class="grid grid-cols-1 gap-4 p-4">
               <!-- Full Labels Section -->
               <div class="card bg-base-200 shadow-sm">
@@ -76,7 +77,9 @@
                     </div>
                     <div>
                       <span class="text-xs opacity-70">Libellé complet:</span>
-                      <p class="text-sm font-mono bg-base-300 p-2 rounded mt-1">{{ op.label }}</p>
+                      <p class="text-sm font-mono bg-base-300 p-2 rounded mt-1">
+                        {{ op.label }}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -117,6 +120,7 @@
                 </div>
               </div>
             </div>
+            }
           </div>
         </td>
       </tr>
