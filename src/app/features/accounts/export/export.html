@@ -1,29 +1,29 @@
 <div class="grid grid-cols-6 gap-5">
-  <div class="col-start-1 col-span-3">
+  <div class="col-span-3 col-start-1">
     <ul class="list bg-base-100 rounded-box shadow-md">
-      <li class="p-4 pb-2 text-lg opacity-60 tracking-wide">Dépenses</li>
+      <li class="p-4 pb-2 text-lg tracking-wide opacity-60">Dépenses</li>
       @for (depense of depensesSums.entries(); track depense[0]) {
         <li class="list-row grid grid-cols-10">
           <div class="col-span-8">
             {{ depense[0] }}
           </div>
           <div class="col-span-2">
-            {{ depense[1] | currency:"EUR" }}
+            {{ depense[1] | currency: "EUR" }}
           </div>
         </li>
       }
     </ul>
   </div>
-  <div class="col-start-4 col-span-3">
+  <div class="col-span-3 col-start-4">
     <ul class="list bg-base-100 rounded-box shadow-md">
-      <li class="p-4 pb-2 text-lg opacity-60 tracking-wide">Ressources</li>
+      <li class="p-4 pb-2 text-lg tracking-wide opacity-60">Ressources</li>
       @for (ressource of ressourcesSums.entries(); track ressource[0]) {
         <li class="list-row grid grid-cols-10">
           <div class="col-span-8">
             {{ ressource[0] }}
           </div>
           <div class="col-span-2">
-            {{ ressource[1] | currency:"EUR" }}
+            {{ ressource[1] | currency: "EUR" }}
           </div>
         </li>
       }
