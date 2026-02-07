@@ -21,8 +21,11 @@ export class Verify {
   operations = this.state.operations;
   expandedOperations = new Set<string>();
 
+  private readonly creditMainOptions = Object.keys(ressources);
+  private readonly debitMainOptions = Object.keys(depenses);
+
   protected mainOptions(op: Operation) {
-    return op.type === 'credit' ? Object.keys(ressources) : Object.keys(depenses);
+    return op.type === 'credit' ? this.creditMainOptions : this.debitMainOptions;
   }
 
   protected changeMainCategory($event: Event, op: Operation) {
