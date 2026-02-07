@@ -28,16 +28,12 @@
 
 /* Hover effects for clickable rows */
 .cursor-pointer tr {
-  transition: all 0.2s ease;
+  transition: none;
 }
 
 /* Badge for comment indicator */
 .badge {
-  transition: transform 0.2s ease;
-}
-
-.badge:hover {
-  transform: scale(1.1);
+  transition: none;
 }
 
 /* Custom scrollbar for long labels */

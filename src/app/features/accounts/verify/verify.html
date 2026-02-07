@@ -41,13 +41,19 @@
           </select>
         </td>
         <td class="text-center">
-          <div class="flex items-center justify-center gap-2">
-            @if (op.comment()) {
-            <div class="badge badge-primary badge-sm">💬</div>
-            }
+          <div class="flex items-center gap-3 flex-row-reverse">
             <div class="btn btn-ghost btn-xs" [class]="isExpanded(op) ? 'btn-active' : ''">
               <span [class]="isExpanded(op) ? 'rotate-180' : ''" class="transition-transform duration-200">⌄</span>
             </div>
+            @if (op.comment()) {
+            <div class="badge badge-primary badge-sm flex items-center justify-center p-1">
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8Z" />
+                <path d="M16 3v5h5" />
+              </svg>
+            </div>
+            }
           </div>
         </td>
       </tr>
