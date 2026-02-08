@@ -1,25 +1,59 @@
-# Compte de gestion des biens pour l'année
+# Maman
 
-[cours-appel.justice.fr](https://www.cours-appel.justice.fr/media/2572)
+This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.0.4.
 
-## Introduction
+## Development server
 
-Ce projet a été réalisé dans le but d'aider ma mère, responsable de ma grand-mère par curatelle, à renseigner les pages 4 à 6 du formulaire de compte de gestion des biens.
-Ma mère tenait un fichier Excel à jour chaque mois en y renseignant les dépenses et ressources mensuelles et occasionnelles de ma grand-mère.
+To start a local development server, run:
 
-J'ai voulu lui proposer une solution qui se souvienne des précédentes catégorisations des dépenses et ressources mensuelles afin qu'elle ne se concentre plus que sur ce qui est unique à chaque mois. J'ai aussi rendu automatique le calcul des sommes.
+```bash
+ng serve
+```
 
-## Solution technique
+Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
 
-J'ai voulu lui proposer un logiciel qu'elle puisse installer simplement sur son ordinateur. Je voulais éviter une solution avec serveur et base de donnée parce que l'outil sera utilisé occasionnellement. J'ai eu l'idée de lui fournir une solution qui puisse se démarrer en un seul fichier HTML grâce au plugin `vite-plugin-singlefile`. Cette webapp a besoin de plusieurs fichiers pour fonctionner :
+## Code scaffolding
 
-- une sauvegarde des catégorisations précédentes (optionnel)
-  - le fichier de sauvegarde est obtenu après un premier usage de l'outil
-- un export des opérations de la Caisse d'Épargne du compte de ma grande-mère
+Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
 
-Au final, le fichier index.html est complètement statique et pourrait très bien être déployé.
+```bash
+ng generate component component-name
+```
 
-### Limites
+For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
 
-1. La solution dépend énormément de si l'export csv d'une banque catégorise les opérations en attribuant un libellé simplifié **et** un libellé plus précis.
-2. Seuls les fichiers CSV de la Caisse d'Épargne sont pris en charge.
+```bash
+ng generate --help
+```
+
+## Building
+
+To build the project run:
+
+```bash
+ng build
+```
+
+This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+
+## Running unit tests
+
+To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+
+```bash
+ng test
+```
+
+## Running end-to-end tests
+
+For end-to-end (e2e) testing, run:
+
+```bash
+ng e2e
+```
+
+Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+
+## Additional Resources
+
+For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.

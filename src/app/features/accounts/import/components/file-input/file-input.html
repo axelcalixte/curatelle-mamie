@@ -1,0 +1,11 @@
+<fieldset class="fieldset">
+  <legend class="fieldset-legend">{{ legend() }}</legend>
+  <input
+    (change)="onChange($event)"
+    [accept]="accept()"
+    [multiple]="false"
+    class="file-input file-input-primary"
+    type="file"
+  />
+  <label class="label">{{ label() }}</label>
+</fieldset>

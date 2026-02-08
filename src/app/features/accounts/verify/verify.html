@@ -1,0 +1,172 @@
+<table class="table">
+  <thead>
+    <tr>
+      <th class="text-center">Edité</th>
+      <th>Date</th>
+      <th>Montant</th>
+      <th>Libellé</th>
+      <th>Catégorie</th>
+      <th>Sous-Catégorie</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (op of operations; track op.id) {
+      <tr
+        [class]="{
+          'bg-base-200': !op.edited(),
+          'hover:bg-base-300': true,
+          'border-primary border-l-4': isExpanded(op),
+        }"
+        class="cursor-pointer transition-all duration-200"
+        title="Cliquer pour voir les détails"
+        (click)="toggleExpanded(op)"
+      >
+        <td class="text-center">
+          <div
+            [class]="op.edited() ? 'status-success' : 'status-error'"
+            aria-label="success"
+            class="status status-lg"
+          ></div>
+        </td>
+        <td>{{ op.date | date }}</td>
+        <td [class]="op.type === 'credit' ? 'text-success' : 'text-error'">
+          {{ op.value | currency: "EUR" }}
+        </td>
+        <td class="max-w-xs truncate" [title]="op.label">{{ op.label }}</td>
+        <td class="p-2" (click)="$event.stopPropagation()">
+          <select (change)="changeMainCategory($event, op)" class="select select-sm">
+            @for (mainOption of mainOptions(op); track $index) {
+              <option [selected]="mainOption === op.category.main()">{{ mainOption }}</option>
+            }
+          </select>
+        </td>
+        <td class="p-2" (click)="$event.stopPropagation()">
+          <select (change)="changeSubCategory($event, op)" class="select select-sm">
+            @for (subOption of subOptions(op); track $index) {
+              <option [selected]="subOption === op.category.sub()">{{ subOption }}</option>
+            }
+          </select>
+        </td>
+        <td class="text-center">
+          <div class="flex flex-row-reverse items-center gap-3">
+            <div class="btn btn-ghost btn-xs" [class]="isExpanded(op) ? 'btn-active' : ''">
+              <span
+                [class]="isExpanded(op) ? 'rotate-180' : ''"
+                class="transition-transform duration-200"
+                >⌄</span
+              >
+            </div>
+            @if (op.comment()) {
+              <div class="badge badge-primary badge-sm flex items-center justify-center p-1">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="12"
+                  height="12"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M16 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8Z" />
+                  <path d="M16 3v5h5" />
+                </svg>
+              </div>
+            }
+          </div>
+        </td>
+      </tr>
+
+      <!-- Expandable detail row -->
+      <tr class="bg-base-100">
+        <td colspan="7" class="p-0">
+          <div class="expandable-content" [class.expanded]="isExpanded(op)">
+            @if (isExpanded(op)) {
+              <div class="grid grid-cols-1 gap-4 p-4">
+                <!-- Full Labels Section -->
+                <div class="card bg-base-200 shadow-sm">
+                  <div class="card-body p-4">
+                    <h3 class="card-title mb-2 text-sm font-semibold">Libellés</h3>
+                    <div class="grid grid-cols-1 gap-3 md:grid-cols-2">
+                      <div>
+                        <span class="text-xs opacity-70">Libellé simplifié:</span>
+                        <p class="bg-base-300 mt-1 rounded p-2 font-mono text-sm">
+                          {{ op.label_ }}
+                        </p>
+                      </div>
+                      <div>
+                        <span class="text-xs opacity-70">Libellé complet:</span>
+                        <p class="bg-base-300 mt-1 rounded p-2 font-mono text-sm">
+                          {{ op.label }}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Comment Section -->
+                <div class="card bg-base-200 shadow-sm">
+                  <div class="card-body p-4">
+                    <h3 class="card-title mb-2 text-sm font-semibold">Commentaire</h3>
+                    <textarea
+                      (change)="changeComment($event, op)"
+                      class="textarea w-full"
+                      rows="3"
+                      placeholder="Ajouter un commentaire pour expliquer cette catégorisation..."
+                      (click)="$event.stopPropagation()"
+                      >{{ op.comment() }}</textarea
+                    >
+                  </div>
+                </div>
+
+                <!-- Operation Info -->
+                <div class="card bg-base-200 shadow-sm">
+                  <div class="card-body p-4">
+                    <h3 class="card-title mb-2 text-sm font-semibold">Informations</h3>
+                    <div class="flex gap-4 text-sm">
+                      <div>
+                        <span class="text-xs opacity-70">Type:</span>
+                        <span
+                          class="badge ml-2"
+                          [class]="op.type === 'credit' ? 'badge-success' : 'badge-error'"
+                        >
+                          {{ op.type === "credit" ? "Crédit" : "Débit" }}
+                        </span>
+                      </div>
+                      <div>
+                        <span class="text-xs opacity-70">Date:</span>
+                        <span class="ml-2">{{ op.date | date: "longDate" }}</span>
+                      </div>
+                      <div>
+                        <span class="text-xs opacity-70">Montant:</span>
+                        <span
+                          class="ml-2"
+                          [class]="op.type === 'credit' ? 'text-success' : 'text-error'"
+                        >
+                          {{ op.value | currency: "EUR" }}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        </td>
+      </tr>
+    }
+  </tbody>
+  <tfoot>
+    <tr>
+      <th class="text-center">Edité</th>
+      <th>Date</th>
+      <th>Montant</th>
+      <th>Libellé</th>
+      <th>Catégorie</th>
+      <th>Sous-Catégorie</th>
+      <th></th>
+    </tr>
+  </tfoot>
+</table>
