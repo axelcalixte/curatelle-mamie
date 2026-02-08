@@ -1,35 +1,29 @@
-<div class="grid grid-cols-6 gap-5">
-  <div class="col-span-3 col-start-1">
-    <ul class="list bg-base-100 rounded-box shadow-md">
-      <li class="p-4 pb-2 text-lg tracking-wide opacity-60">Dépenses</li>
-      @for (depense of depensesSums.entries(); track depense[0]) {
-        <li class="list-row grid grid-cols-10">
-          <div class="col-span-8">
-            {{ depense[0] }}
-          </div>
-          <div class="col-span-2">
-            {{ depense[1] | currency: "EUR" }}
-          </div>
-        </li>
-      }
-    </ul>
-  </div>
-  <div class="col-span-3 col-start-4">
-    <ul class="list bg-base-100 rounded-box shadow-md">
-      <li class="p-4 pb-2 text-lg tracking-wide opacity-60">Ressources</li>
-      @for (ressource of ressourcesSums.entries(); track ressource[0]) {
-        <li class="list-row grid grid-cols-10">
-          <div class="col-span-8">
-            {{ ressource[0] }}
-          </div>
-          <div class="col-span-2">
-            {{ ressource[1] | currency: "EUR" }}
-          </div>
-        </li>
-      }
-    </ul>
-  </div>
-</div>
-<div class="flex">
-  <button class="btn mx-auto" (click)="exportSave()">Exporter la sauvegarde</button>
+<div class="flex flex-col gap-4 justify-center md:flex-row md:flex-wrap">
+      <ul class="list bg-base-100 rounded-box shadow-md md:flex-5/12">
+        <li class="p-4 pb-2 text-lg tracking-wide opacity-60">Dépenses</li>
+        @for (depense of depensesSums.entries(); track depense[0]) {
+          <li class="list-row grid grid-cols-10">
+            <div class="col-span-7">
+              {{ depense[0] }}
+            </div>
+            <div class="col-span-3">
+              {{ depense[1] | currency: "EUR" }}
+            </div>
+          </li>
+        }
+      </ul>
+      <ul class="list bg-base-100 rounded-box shadow-md md:flex-5/12">
+        <li class="p-4 pb-2 text-lg tracking-wide opacity-60">Ressources</li>
+        @for (ressource of ressourcesSums.entries(); track ressource[0]) {
+          <li class="list-row grid grid-cols-10">
+            <div class="col-span-7">
+              {{ ressource[0] }}
+            </div>
+            <div class="col-span-3">
+              {{ ressource[1] | currency: "EUR" }}
+            </div>
+          </li>
+        }
+      </ul>
+    <button class="btn" (click)="exportSave()">Exporter la sauvegarde</button>
 </div>

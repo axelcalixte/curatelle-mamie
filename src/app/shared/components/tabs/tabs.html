@@ -1,9 +1,9 @@
 <div class="tabs tabs-lg tabs-border flex" role="tablist">
-  @for (tab of tabs(); track $index; let i = $index) {
+  @for (tab of tabs(); track $index) {
     <a
       #link
       (click)="change($event)"
-      class="tab flex-auto"
+      class="tab flex-auto max-sm:flex-1/2"
       role="tab"
       routerLink="{{ tab.route }}"
       routerLinkActive="tab-active text-primary"
