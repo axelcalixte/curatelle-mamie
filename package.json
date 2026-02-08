@@ -1,6 +1,6 @@
 {
   "name": "maman",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -27,31 +27,31 @@
   "private": true,
   "packageManager": "npm@11.6.2",
   "dependencies": {
-    "@angular/cdk": "^21.0.5",
+    "@angular/cdk": "^21.1.3",
     "@angular/common": "^21.0.0",
     "@angular/compiler": "^21.0.0",
     "@angular/core": "^21.0.0",
-    "@angular/forms": "^21.0.0",
+    "@angular/forms": "^21.1.3",
     "@angular/platform-browser": "^21.0.0",
-    "@angular/router": "^21.0.0",
-    "daisyui": "^5.5.14",
+    "@angular/router": "^21.1.3",
+    "daisyui": "^5.5.18",
     "papaparse": "^5.5.3",
     "rxjs": "~7.8.0",
-    "tslib": "^2.3.0"
+    "tslib": "^2.8.1"
   },
   "devDependencies": {
-    "@angular/build": "^21.0.4",
-    "@angular/cli": "^21.0.4",
-    "@angular/compiler-cli": "^21.0.0",
-    "@tailwindcss/postcss": "^4.1.12",
+    "@angular/build": "^21.1.3",
+    "@angular/cli": "^21.1.3",
+    "@angular/compiler-cli": "^21.1.3",
+    "@tailwindcss/postcss": "^4.1.18",
     "@types/papaparse": "^5.5.2",
     "@types/wicg-file-system-access": "^2023.10.7",
-    "jsdom": "^27.1.0",
-    "postcss": "^8.5.3",
-    "prettier": "^3.7.4",
-    "prettier-plugin-tailwindcss": "^0.6.11",
+    "jsdom": "^27.4.0",
+    "postcss": "^8.5.6",
+    "prettier": "^3.8.1",
+    "prettier-plugin-tailwindcss": "^0.6.14",
     "tailwindcss": "^4.1.12",
     "typescript": "~5.9.2",
-    "vitest": "^4.0.8"
+    "vitest": "^4.0.18"
   }
 }
