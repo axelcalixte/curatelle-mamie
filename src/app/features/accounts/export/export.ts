@@ -1,6 +1,5 @@
 import { Component, inject } from '@angular/core';
 import { State } from '../../../shared/services/state';
-import { ressources } from '../../../shared/types/form-sections';
 import { CurrencyPipe } from '@angular/common';
 
 @Component({
@@ -13,8 +12,9 @@ export class Export {
   state = inject(State);
 
   depensesSums = this.state.depensesSummary();
+  depensesTotal = this.state.depensesTotal();
   ressourcesSums = this.state.ressourcesSummary();
-  protected readonly ressources = ressources;
+  ressourcesTotal = this.state.ressourcesTotal();
 
   protected async exportSave() {
     const handle = await window.showSaveFilePicker({

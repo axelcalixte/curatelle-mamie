@@ -192,6 +192,10 @@ export class State {
     return res;
   });
 
+  ressourcesTotal = computed(() => {
+    return [...this.ressourcesSummary().values()].reduce((a, b) => a + b, 0);
+  });
+
   depensesSummary = computed(() => {
     const res = new Map();
     this.summary().forEach((v, k) => {
@@ -200,5 +204,9 @@ export class State {
       }
     });
     return res;
+  });
+
+  depensesTotal = computed(() => {
+    return [...this.depensesSummary().values()].reduce((a, b) => a + b, 0);
   });
 }

@@ -11,6 +11,12 @@
         </div>
       </li>
     }
+    <li class="list-row grid grid-cols-10">
+      <div class="col-span-7">"Total"</div>
+      <div class="col-span-3">
+        {{ depensesTotal | currency: "EUR" }}
+      </div>
+    </li>
   </ul>
   <ul class="list bg-base-100 rounded-box shadow-md md:flex-5/12">
     <li class="p-4 pb-2 text-lg tracking-wide opacity-60">Ressources</li>
@@ -24,6 +30,12 @@
         </div>
       </li>
     }
+    <li class="list-row grid grid-cols-10">
+      <div class="col-span-7">"Total"</div>
+      <div class="col-span-3">
+        {{ ressourcesTotal | currency: "EUR" }}
+      </div>
+    </li>
   </ul>
   <button class="btn" (click)="exportSave()">Exporter la sauvegarde</button>
 </div>
