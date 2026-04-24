@@ -21,15 +21,21 @@ export class Import {
       skipEmptyLines: true, // https://github.com/mholt/PapaParse/issues/447
       transform: (value, field) => {
         if (field === 'Credit' && value.startsWith('+')) {
-          return value.slice(1, value.length).replace(',', '.');
-        } else {
+          return value.slice(1).replace(',', '.');
+        } else if (field === 'Debit' && value.startsWith('-')) {
           return value.replace(',', '.');
+        } else if (typeof field === 'string' && field.startsWith('Date')) {
+          const dateElements = value.split('/').map((el) => parseInt(el));
+          return new Date(dateElements[0], dateElements[1] - 1, dateElements[2]);
+        } else {
+          return value;
         }
       },
       complete: (results) => {
-        this.state.setOperations = results.data.map((caisseEpargne) =>
-          this.adapters.mapCaisseEpargneToOperation(caisseEpargne),
-        );
+        this.state.setOperations = results.data
+          .map((caisseEpargne) => this.adapters.mapCaisseEpargneToOperation(caisseEpargne))
+          .sort((a, b) => a.date.getTime() - b.date.getTime());
+
         // Initialize shared comment signals from loaded save file
         this.state.initializeCommentSignalsFromSave();
       },
