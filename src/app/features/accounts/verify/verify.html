@@ -2,7 +2,7 @@
   <thead>
     <tr>
       <th class="text-center">Edité</th>
-      <th>Date</th>
+      <th class="flex place-content-evenly">Date<app-month-picker (dateRange)="getDateRangeSelection($event)"></app-month-picker></th>
       <th>Montant</th>
       <th>Libellé</th>
       <th>Catégorie</th>
@@ -11,7 +11,7 @@
     </tr>
   </thead>
   <tbody>
-    @for (op of operations; track op.id) {
+    @for (op of filteredOperations(); track op.id) {
       <tr
         [class]="{
           'bg-base-200': !op.edited(),
@@ -29,7 +29,7 @@
             class="status status-lg"
           ></div>
         </td>
-        <td>{{ op.date | date }}</td>
+        <td class="text-center">{{ op.date | date }}</td>
         <td [class]="op.type === 'credit' ? 'text-success' : 'text-error'">
           {{ op.value | currency: "EUR" }}
         </td>
@@ -161,7 +161,7 @@
   <tfoot>
     <tr>
       <th class="text-center">Edité</th>
-      <th>Date</th>
+      <th class="flex place-content-evenly">Date<app-month-picker (dateRange)="getDateRangeSelection($event)"></app-month-picker></th>
       <th>Montant</th>
       <th>Libellé</th>
       <th>Catégorie</th>

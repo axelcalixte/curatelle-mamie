@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { State } from '../../../shared/services/state';
 import {
   depenses,
@@ -8,10 +8,11 @@ import {
   RessourcesKeys,
 } from '../../../shared/types/form-sections';
 import { CurrencyPipe, DatePipe } from '@angular/common';
+import { MonthPicker } from '../../../shared/components/month-picker/month-picker';
 
 @Component({
   selector: 'app-verify',
-  imports: [CurrencyPipe, DatePipe],
+  imports: [CurrencyPipe, DatePipe, MonthPicker],
   templateUrl: './verify.html',
   styleUrl: './verify.css',
 })
@@ -108,5 +109,19 @@ export class Verify {
         newComment,
       );
     }
+  }
+
+  filteredOperations = computed(() => {
+    const range = this.dateRange();
+    if (!range) return this.operations;
+
+    return this.operations.filter(
+      (op) => range[0].getTime() <= op.date.getTime() && op.date.getTime() <= range[1].getTime(),
+    );
+  });
+  dateRange = signal<[Date, Date] | undefined>(undefined);
+
+  protected getDateRangeSelection($event: [Date, Date]) {
+    this.dateRange.set($event);
   }
 }
