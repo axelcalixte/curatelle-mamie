@@ -111,6 +111,13 @@ export class Verify {
     }
   }
 
+  dateRange = signal<[Date, Date] | undefined>(undefined);
+  editedSelect = signal<null | boolean>(null);
+
+  editedSelection($event: null | boolean) {
+    this.editedSelect.set($event);
+  }
+
   filteredOperations = computed(() => {
     const range = this.dateRange();
     if (!range) return this.operations;
@@ -119,9 +126,4 @@ export class Verify {
       (op) => range[0].getTime() <= op.date.getTime() && op.date.getTime() <= range[1].getTime(),
     );
   });
-  dateRange = signal<[Date, Date] | undefined>(undefined);
-
-  protected getDateRangeSelection($event: [Date, Date]) {
-    this.dateRange.set($event);
-  }
 }

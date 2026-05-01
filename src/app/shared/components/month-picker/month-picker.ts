@@ -1,7 +1,5 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, model } from '@angular/core';
 import 'cally';
-import { outputFromObservable } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-month-picker',
@@ -11,10 +9,14 @@ import { outputFromObservable } from '@angular/core/rxjs-interop';
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class MonthPicker {
-  private readonly dateRangeSubject = new Subject<[Date, Date]>();
-  dateRange = outputFromObservable(this.dateRangeSubject.asObservable());
+  readonly dateRange = model();
 
   protected nextSubject($event: any) {
-    this.dateRangeSubject.next($event.target.value.split('/').map((el: string) => new Date(el)));
+    this.dateRange.set(
+      $event.target.value.split('/').map((date: string) => {
+        const el = date.split('-').map((e) => parseInt(e));
+        return new Date(el[0], el[1] - 1, el[2]);
+      }),
+    );
   }
 }

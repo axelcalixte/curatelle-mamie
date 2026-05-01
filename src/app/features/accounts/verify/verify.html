@@ -2,7 +2,12 @@
   <thead>
     <tr>
       <th class="text-center">Edité</th>
-      <th class="flex place-content-evenly">Date<app-month-picker (dateRange)="getDateRangeSelection($event)"></app-month-picker></th>
+      <th>
+        <div class="flex place-content-around">
+          <div>Date</div>
+          <app-month-picker [(dateRange)]="dateRange"></app-month-picker>
+        </div>
+      </th>
       <th>Montant</th>
       <th>Libellé</th>
       <th>Catégorie</th>
@@ -158,15 +163,4 @@
       </tr>
     }
   </tbody>
-  <tfoot>
-    <tr>
-      <th class="text-center">Edité</th>
-      <th class="flex place-content-evenly">Date<app-month-picker (dateRange)="getDateRangeSelection($event)"></app-month-picker></th>
-      <th>Montant</th>
-      <th>Libellé</th>
-      <th>Catégorie</th>
-      <th>Sous-Catégorie</th>
-      <th></th>
-    </tr>
-  </tfoot>
 </table>
