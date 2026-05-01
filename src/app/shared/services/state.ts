@@ -158,6 +158,17 @@ export class State {
   }
 
   /**
+   * Remove categorization from localStorage
+   */
+  removeFromLocalStorage(label_: string) {
+    try {
+      localStorage.removeItem(label_);
+    } catch (error) {
+      console.warn('Failed to remove from localStorage:', error);
+    }
+  }
+
+  /**
    * Get the appropriate label for localStorage key
    */
   getStorageLabel(operation: Operation): string {

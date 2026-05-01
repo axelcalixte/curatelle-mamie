@@ -1,4 +1,4 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { inject, Injectable, signal, WritableSignal } from '@angular/core';
 import { CaisseEpargne } from '../types/bank-formats';
 import {
   depenses,
@@ -25,8 +25,9 @@ export class BankAdapters {
     const isChequeOrRetrait = ['CHEQUE', 'RETRAIT'].some((x) => simplifiedLabel.startsWith(x));
     const storageLabel = isChequeOrRetrait ? fullLabel : simplifiedLabel;
 
+    const edited = signal(true);
     const mainCategory = this.retrieveMainCategory(type, simplifiedLabel);
-    const subCategory = this.retrieveSubCategory(type, simplifiedLabel);
+    const subCategory = this.retrieveSubCategory(type, simplifiedLabel, edited);
     const commentValue = this.retrieveComment(storageLabel);
 
     // Get shared comment signal for this storage label
@@ -35,7 +36,7 @@ export class BankAdapters {
     return {
       type: type, // TODO: I probably don't need to keep it there, it is kept in Category
       id: crypto.randomUUID(),
-      edited: signal(false),
+      edited: edited,
       date: caisseEpargne['Date operation'],
       value: type === 'credit' ? parseFloat(caisseEpargne.Credit) : parseFloat(caisseEpargne.Debit),
       label_: simplifiedLabel,
@@ -66,7 +67,11 @@ export class BankAdapters {
       : (Object.keys(ressources)[0] as RessourcesKeys);
   }
 
-  private retrieveSubCategory(type: 'debit' | 'credit', label: string) {
+  private retrieveSubCategory(
+    type: 'debit' | 'credit',
+    label: string,
+    edited: WritableSignal<boolean>,
+  ) {
     if (this.state.save()?.has(label)) {
       return this.state.save()?.get(label)?.at(1);
     }
@@ -76,6 +81,7 @@ export class BankAdapters {
       return JSON.parse(item).at(1) as string | undefined;
     }
 
+    edited.set(false);
     return type === 'debit'
       ? (depenses['Dépenses de la vie courante'][0] as string)
       : (ressources.Revenus[0] as string);

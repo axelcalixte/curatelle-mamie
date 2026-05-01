@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { State } from '../../../shared/services/state';
 import {
+  DEFAULT_OPTION,
   depenses,
   DepensesKeys,
   Entity,
@@ -30,7 +31,11 @@ export class Categorize {
       this.state.operations.forEach((x) => {
         if (x.label_ === ent.label) {
           x.category.main.set(newMainCatLabel);
-          this.state.saveToLocalStorage(x.label_, newMainCatLabel, x.category.sub());
+          if (x.category.sub() == DEFAULT_OPTION) {
+            this.state.removeFromLocalStorage(x.label_);
+          } else {
+            this.state.saveToLocalStorage(x.label_, newMainCatLabel, x.category.sub());
+          }
         }
       });
     }
@@ -53,8 +58,12 @@ export class Categorize {
       for (const x of this.state.operations) {
         if (x.label_ === ent.label) {
           x.category.sub.set(newSubCat.label);
-          x.edited.set(true);
-          this.state.saveToLocalStorage(x.label_, x.category.main(), newSubCat.label);
+          x.edited.set(newSubCat.label !== DEFAULT_OPTION);
+          if (newSubCat.label == DEFAULT_OPTION) {
+            this.state.removeFromLocalStorage(x.label_);
+          } else {
+            this.state.saveToLocalStorage(x.label_, x.category.main(), newSubCat.label);
+          }
         }
       }
     }

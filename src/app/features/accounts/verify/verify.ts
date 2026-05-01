@@ -1,6 +1,7 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { State } from '../../../shared/services/state';
 import {
+  DEFAULT_OPTION,
   depenses,
   DepensesKeys,
   Operation,
@@ -39,12 +40,16 @@ export class Verify {
       if (modifiedOperation) {
         modifiedOperation.category.main.set(newMainCatLabel);
         const storageLabel = this.state.getStorageLabel(modifiedOperation);
-        this.state.saveToLocalStorage(
-          storageLabel,
-          newMainCatLabel,
-          modifiedOperation.category.sub(),
-          modifiedOperation.comment(),
-        );
+        if (modifiedOperation.category.sub() == DEFAULT_OPTION) {
+          this.state.removeFromLocalStorage(storageLabel);
+        } else {
+          this.state.saveToLocalStorage(
+            storageLabel,
+            newMainCatLabel,
+            modifiedOperation.category.sub(),
+            modifiedOperation.comment(),
+          );
+        }
       }
     }
   }
@@ -68,14 +73,18 @@ export class Verify {
       const modifiedOperation = this.state.operations.at(operationIdx);
       if (modifiedOperation) {
         modifiedOperation.category.sub.set(newSubCatLabel);
-        modifiedOperation.edited.set(true);
+        modifiedOperation.edited.set(newSubCatLabel !== DEFAULT_OPTION);
         const storageLabel = this.state.getStorageLabel(modifiedOperation);
-        this.state.saveToLocalStorage(
-          storageLabel,
-          modifiedOperation.category.main(),
-          newSubCatLabel,
-          modifiedOperation.comment(),
-        );
+        if (newSubCatLabel == DEFAULT_OPTION) {
+          this.state.removeFromLocalStorage(storageLabel);
+        } else {
+          this.state.saveToLocalStorage(
+            storageLabel,
+            modifiedOperation.category.main(),
+            newSubCatLabel,
+            modifiedOperation.comment(),
+          );
+        }
       }
     }
   }
