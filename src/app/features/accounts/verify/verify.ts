@@ -38,7 +38,6 @@ export class Verify {
       const modifiedOperation = this.state.operations.at(operationIdx);
       if (modifiedOperation) {
         modifiedOperation.category.main.set(newMainCatLabel);
-        modifiedOperation.edited.set(true);
         const storageLabel = this.state.getStorageLabel(modifiedOperation);
         this.state.saveToLocalStorage(
           storageLabel,
@@ -100,7 +99,6 @@ export class Verify {
     const modifiedOperation = this.state.operations.at(operationIdx);
     if (modifiedOperation) {
       modifiedOperation.comment.set(newComment);
-      modifiedOperation.edited.set(true);
       const storageLabel = this.state.getStorageLabel(modifiedOperation);
       this.state.saveToLocalStorage(
         storageLabel,

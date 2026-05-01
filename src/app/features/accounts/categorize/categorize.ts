@@ -30,7 +30,6 @@ export class Categorize {
       this.state.operations.forEach((x) => {
         if (x.label_ === ent.label) {
           x.category.main.set(newMainCatLabel);
-          x.edited.set(true);
           this.state.saveToLocalStorage(x.label_, newMainCatLabel, x.category.sub());
         }
       });
