@@ -180,44 +180,76 @@ export class State {
    * signal holding the sums per subcategory
    */
   private summary = computed(() => {
-    const res = new Map<string, number>();
+    const res = new Map<string, Map<string, number>>();
     for (const op of this.operations_()) {
-      const key = op.category.sub();
-      const value = res.get(key);
-      if (value) {
-        res.set(key, value + op.value);
+      const main = op.category.main();
+      const sub = op.category.sub();
+      const value = op.value;
+      if (res.has(main)) {
+        const inner = res.get(main) ?? new Map();
+        if (inner.has(sub)) {
+          inner.set(sub, inner.get(sub) + value);
+        } else {
+          inner.set(sub, value);
+        }
       } else {
-        res.set(key, op.value);
+        res.set(main, new Map([[sub, value]]));
       }
     }
     return res;
   });
 
   ressourcesSummary = computed(() => {
-    const res = new Map();
-    this.summary().forEach((v, k) => {
-      if (v > 0) {
-        res.set(k, v);
+    const res = new Map<string, Map<string, number>>();
+    this.summary().forEach((inner, main) => {
+      for (const [sub, value] of [...inner.entries()]) {
+        if (value > 0) {
+          if (res.has(main)) {
+            const resInner = res.get(main) ?? new Map();
+            if (resInner.has(sub)) {
+              resInner.set(sub, resInner.get(sub) + value);
+            } else {
+              resInner.set(sub, value);
+            }
+          } else {
+            res.set(main, new Map([[sub, value]]));
+          }
+        }
       }
     });
     return res;
   });
 
   ressourcesTotal = computed(() => {
-    return [...this.ressourcesSummary().values()].reduce((a, b) => a + b, 0);
+    return [...this.ressourcesSummary().values()]
+      .flatMap((v) => [...v.values()])
+      .reduce((a, b) => a + b, 0);
   });
 
   depensesSummary = computed(() => {
     const res = new Map();
-    this.summary().forEach((v, k) => {
-      if (v < 0) {
-        res.set(k, v);
+    this.summary().forEach((inner, main) => {
+      for (const [sub, value] of [...inner.entries()]) {
+        if (value < 0) {
+          if (res.has(main)) {
+            const resInner = res.get(main) ?? new Map();
+            if (resInner.has(sub)) {
+              resInner.set(sub, resInner.get(sub) + value);
+            } else {
+              resInner.set(sub, value);
+            }
+          } else {
+            res.set(main, new Map([[sub, value]]));
+          }
+        }
       }
     });
     return res;
   });
 
   depensesTotal = computed(() => {
-    return [...this.depensesSummary().values()].reduce((a, b) => a + b, 0);
+    return [...this.depensesSummary().values()]
+      .flatMap((v) => [...v.values()])
+      .reduce((a, b) => a + b, 0);
   });
 }

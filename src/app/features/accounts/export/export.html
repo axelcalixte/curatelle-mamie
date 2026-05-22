@@ -1,15 +1,35 @@
 <div class="flex flex-col justify-center gap-4 md:flex-row md:flex-wrap">
   <ul class="list bg-base-100 rounded-box shadow-md md:flex-5/12">
     <li class="p-4 pb-2 text-lg tracking-wide opacity-60">Dépenses</li>
-    @for (depense of depensesSums.entries(); track depense[0]) {
-      <li class="list-row grid grid-cols-10">
-        <div class="col-span-7">
-          {{ depense[0] }}
-        </div>
-        <div class="col-span-3">
-          {{ depense[1] | currency: "EUR" }}
-        </div>
-      </li>
+    @for (ressource of depensesSums.entries(); track ressource[0]) {
+      <details class="collapse">
+        <summary class="collapse-title flex justify-between font-medium">
+          {{ ressource[0]
+          }}<span
+            ><svg
+              class="size-4 fill-current"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 640 640"
+            >
+              <!--!Font Awesome Free 7.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2026 Fonticons, Inc.-->
+              <path
+                d="M297.4 438.6C309.9 451.1 330.2 451.1 342.7 438.6L502.7 278.6C515.2 266.1 515.2 245.8 502.7 233.3C490.2 220.8 469.9 220.8 457.4 233.3L320 370.7L182.6 233.4C170.1 220.9 149.8 220.9 137.3 233.4C124.8 245.9 124.8 266.2 137.3 278.7L297.3 438.7z"
+              /></svg
+          ></span>
+        </summary>
+        <ul>
+          @for (sub of ressource[1].entries(); track sub[1]) {
+            <li class="list-row grid grid-cols-10">
+              <div class="col-span-7" [class]="{ 'bg-amber-500': sub[0] === '---' }">
+                {{ sub[0] === "---" ? "A catégoriser" : sub[0] }}
+              </div>
+              <div class="col-span-3">
+                {{ sub[1] | currency: "EUR" }}
+              </div>
+            </li>
+          }
+        </ul>
+      </details>
     }
     <li class="list-row grid grid-cols-10">
       <div class="col-span-7">Total</div>
@@ -21,14 +41,34 @@
   <ul class="list bg-base-100 rounded-box shadow-md md:flex-5/12">
     <li class="p-4 pb-2 text-lg tracking-wide opacity-60">Ressources</li>
     @for (ressource of ressourcesSums.entries(); track ressource[0]) {
-      <li class="list-row grid grid-cols-10">
-        <div class="col-span-7">
-          {{ ressource[0] }}
-        </div>
-        <div class="col-span-3">
-          {{ ressource[1] | currency: "EUR" }}
-        </div>
-      </li>
+      <details class="collapse">
+        <summary class="collapse-title flex justify-between font-medium">
+          {{ ressource[0]
+          }}<span
+            ><svg
+              class="size-4 fill-current"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 640 640"
+            >
+              <!--!Font Awesome Free 7.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2026 Fonticons, Inc.-->
+              <path
+                d="M297.4 438.6C309.9 451.1 330.2 451.1 342.7 438.6L502.7 278.6C515.2 266.1 515.2 245.8 502.7 233.3C490.2 220.8 469.9 220.8 457.4 233.3L320 370.7L182.6 233.4C170.1 220.9 149.8 220.9 137.3 233.4C124.8 245.9 124.8 266.2 137.3 278.7L297.3 438.7z"
+              /></svg
+          ></span>
+        </summary>
+        <ul>
+          @for (sub of ressource[1].entries(); track sub[1]) {
+            <li class="list-row grid grid-cols-10">
+              <div class="col-span-7" [class]="{ 'bg-amber-500': sub[0] === '---' }">
+                {{ sub[0] === "---" ? "A catégoriser" : sub[0] }}
+              </div>
+              <div class="col-span-3">
+                {{ sub[1] | currency: "EUR" }}
+              </div>
+            </li>
+          }
+        </ul>
+      </details>
     }
     <li class="list-row grid grid-cols-10">
       <div class="col-span-7">Total</div>
