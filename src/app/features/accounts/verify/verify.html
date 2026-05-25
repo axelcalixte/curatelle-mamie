@@ -8,10 +8,19 @@
           <app-month-picker [(dateRange)]="dateRange"></app-month-picker>
         </div>
       </th>
-      <th>Montant</th>
+      <th>
+        <div class="flex place-content-around">
+          <div>Montant</div>
+          <app-drop-down-search
+            [name]="'Montant'"
+            [elements]="montantsForFilter()"
+            [reset]="reset"
+          ></app-drop-down-search>
+        </div>
+      </th>
       <th>Libellé</th>
       <th>Catégorie</th>
-      <th>Sous-Catégorie</th>
+      <th>Sous-Catégorie<button class="btn" (click)="reset.next()">RESET</button></th>
       <th></th>
     </tr>
   </thead>

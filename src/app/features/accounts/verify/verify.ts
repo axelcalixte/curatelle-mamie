@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, linkedSignal, signal } from '@angular/core';
 import { State } from '../../../shared/services/state';
 import {
   DEFAULT_OPTION,
@@ -10,10 +10,12 @@ import {
 } from '../../../shared/types/form-sections';
 import { CurrencyPipe, DatePipe } from '@angular/common';
 import { MonthPicker } from '../../../shared/components/month-picker/month-picker';
+import { DropDownSearch } from '../../../shared/components/drop-down-search/drop-down-search';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-verify',
-  imports: [CurrencyPipe, DatePipe, MonthPicker],
+  imports: [CurrencyPipe, DatePipe, MonthPicker, DropDownSearch],
   templateUrl: './verify.html',
   styleUrl: './verify.css',
 })
@@ -22,6 +24,15 @@ export class Verify {
 
   operations = this.state.operations;
   expandedOperations = new Set<string>();
+
+  reset = new Subject<void>();
+  montantsForFilter = linkedSignal(() => {
+    console.log("montants for filter");
+    const o = new Set(this.operations.map((v) => {
+      return { value: v.id, label: v.value.toString(10), checked: false  }}));
+      console.log(o);
+      return o;
+  });
 
   private readonly creditMainOptions = Object.keys(ressources);
   private readonly debitMainOptions = Object.keys(depenses);
